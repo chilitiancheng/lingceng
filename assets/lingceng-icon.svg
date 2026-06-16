@@ -1,0 +1,28 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#050505"/>
+
+  <circle cx="128" cy="128" r="75" stroke="#F5F5F5" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="110 14"/>
+  <circle cx="128" cy="128" r="102" stroke="#F5F5F5" stroke-width="3.5"/>
+
+  <g stroke="#F5F5F5" stroke-width="4" stroke-linecap="round">
+    <line x1="128" y1="79" x2="128" y2="89"/>
+    <line x1="128" y1="167" x2="128" y2="177"/>
+    <line x1="79" y1="128" x2="89" y2="128"/>
+    <line x1="167" y1="128" x2="177" y2="128"/>
+
+    <line x1="106.5" y1="84.5" x2="111.5" y2="93.5"/>
+    <line x1="149.5" y1="162.5" x2="144.5" y2="171.5"/>
+
+    <line x1="84.5" y1="106.5" x2="93.5" y2="111.5"/>
+    <line x1="162.5" y1="149.5" x2="171.5" y2="144.5"/>
+
+    <line x1="149.5" y1="84.5" x2="144.5" y2="93.5"/>
+    <line x1="106.5" y1="162.5" x2="111.5" y2="171.5"/>
+
+    <line x1="171.5" y1="106.5" x2="162.5" y2="111.5"/>
+    <line x1="93.5" y1="149.5" x2="84.5" y2="144.5"/>
+  </g>
+
+  <circle cx="128" cy="128" r="15" stroke="#F5F5F5" stroke-width="3.5"/>
+  <circle cx="128" cy="128" r="7.5" stroke="#FF1A1A" stroke-width="6"/>
+</svg>

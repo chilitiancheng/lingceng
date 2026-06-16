@@ -20,6 +20,7 @@
   const searchInput = $("#searchInput");
   const dialog = $("#detailDialog");
   const detailContent = $("#detailContent");
+  const topbar = $(".topbar");
 
   function escapeHtml(value) {
     return String(value || "")
@@ -287,6 +288,12 @@
     renderCards();
   });
 
+  function updateTopbarState() {
+    topbar?.classList.toggle("scrolled", window.scrollY > 24);
+  }
+
+  window.addEventListener("scroll", updateTopbarState, { passive: true });
+
   renderTabs();
   renderCards();
   renderSection("#principleList", "principles");
@@ -295,4 +302,5 @@
   renderSection("#factionGrid", "factions");
   renderSection("#storyList", "stories", storyTemplate);
   renderCanvasMap();
+  updateTopbarState();
 })();
