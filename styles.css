@@ -35,6 +35,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   text-rendering: optimizeLegibility;
+  padding-top: 82px;
 }
 
 a {
@@ -66,10 +67,12 @@ h3,
 }
 
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 20;
-  min-height: 68px;
+  min-height: 82px;
   padding: 12px clamp(18px, 4vw, 48px);
   border-bottom: 1px solid var(--line);
   background: rgba(8, 10, 12, 0.86);
@@ -77,7 +80,7 @@ h3,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 18px;
 }
 
 .page-shell {
@@ -117,16 +120,32 @@ h3,
 
 .nav-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .nav-list a {
+  flex: 0 0 auto;
   padding: 8px 10px;
   border: 1px solid transparent;
   color: var(--muted);
   font-size: 14px;
+}
+
+.top-search {
+  flex: 0 1 280px;
+  min-width: 220px;
+}
+
+.top-search span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
 }
 
 .nav-list a:hover {
@@ -140,7 +159,7 @@ main {
 }
 
 .hero {
-  min-height: calc(100vh - 68px);
+  min-height: calc(100vh - 82px);
   display: grid;
   place-items: center;
   text-align: center;
@@ -253,10 +272,9 @@ main {
 }
 
 .toolbar {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(0, auto);
+  display: flex;
   gap: 14px;
-  align-items: end;
+  align-items: center;
   margin-bottom: 22px;
 }
 
@@ -651,13 +669,40 @@ main {
 
 @media (max-width: 900px) {
   .topbar {
-    position: static;
-    align-items: flex-start;
+    min-height: 176px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    align-items: stretch;
     flex-direction: column;
+    gap: 8px;
+  }
+
+  body {
+    padding-top: 176px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
   }
 
   .nav-list {
     justify-content: flex-start;
+    padding-bottom: 2px;
+  }
+
+  .nav-list a {
+    padding: 6px 8px;
+  }
+
+  .top-search input {
+    min-height: 38px;
+  }
+
+  .top-search {
+    width: 100%;
+    min-width: 0;
+    flex-basis: auto;
   }
 
   .language-grid {
@@ -669,7 +714,7 @@ main {
   }
 
   .toolbar {
-    grid-template-columns: 1fr;
+    display: block;
   }
 
   .relation-overview,
