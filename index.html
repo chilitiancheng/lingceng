@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>灵层世界观档案</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar" aria-label="世界观导航">
+        <a class="brand" href="#top" aria-label="回到首页">
+          <span class="brand-mark">LC</span>
+          <span>
+            <strong>灵层</strong>
+            <small>WORLD ARCHIVE</small>
+          </span>
+        </a>
+        <nav class="nav-list">
+          <a href="#overview">总览</a>
+          <a href="#principles">世界底层</a>
+          <a href="#characters">角色档案</a>
+          <a href="#dreams">梦境档案</a>
+          <a href="#factions">阵营关系</a>
+          <a href="#relationship-map">关系白板</a>
+          <a href="#language">环文</a>
+          <a href="#stories">正文阅读</a>
+        </nav>
+
+    </header>
+    <div class="page-shell">
+      <main id="top">
+        <section class="hero" id="overview">
+          <div class="hero-copy">
+            <p class="eyebrow">WORLDVIEW / DREAM / FATE LINE</p>
+            <h1>灵层</h1>
+            <p class="hero-text">
+              一个诞生于宇宙撕裂之后、在无序中求生的世界。梦是它降下的锚点，命运线是权柄的形状，十二司游则行走在灵层与初始宇宙的边界上。
+            </p>
+            <div class="hero-actions">
+              <a class="primary-link" href="#principles">理解灵层</a>
+              <a class="secondary-link" href="#dreams">查看梦境档案</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="section intro-grid" aria-label="世界观概览">
+          <article>
+            <span class="tag">底层原理</span>
+            <h2>量子引力修正与反弹膨胀</h2>
+            <p>灵层并非普通异世界。它是母宇宙撕裂后分离出的残缺宇宙，继承了更混乱、更高熵的量子涨落。</p>
+          </article>
+          <article>
+            <span class="tag danger">梦境锚点</span>
+            <h2>梦让两界规则重叠</h2>
+            <p>司游通过梦在初始宇宙设立锚点，让两个世界的规则开始重叠。梦境越深入，边界越难回收。</p>
+          </article>
+          <article>
+            <span class="tag wine">命运线</span>
+            <h2>无法跳出的最高位概念</h2>
+            <p>命运先于一切存在。命运线是命运赠与个体的具体化权柄，也是异能、权柄与反叛的源头。</p>
+          </article>
+        </section>
+
+        <section class="section archive-browser">
+          <div class="section-heading">
+            <p class="eyebrow">ARCHIVE BROWSER</p>
+            <h2>档案索引</h2>
+            <p>按世界规则、角色、梦境、阵营与正文阅读整理现有设定。</p>
+          </div>
+          <div class="toolbar">
+            <label class="search-box">
+              <span>搜索</span>
+              <input id="searchInput" type="search" placeholder="输入角色、梦境编号、阵营或关键词" />
+            </label>
+            <div class="filter-tabs" id="filterTabs" aria-label="分类筛选"></div>
+          </div>
+          <div class="cards-grid" id="cardsGrid"></div>
+        </section>
+
+        <section class="section split-section" id="principles">
+          <div class="section-heading">
+            <p class="eyebrow">FOUNDATION</p>
+            <h2>世界底层</h2>
+            <p>这部分是陌生读者理解灵层的入口：命运、层级、梦与锚点、宇宙撕裂和吞并规则。</p>
+          </div>
+          <div class="feature-list" id="principleList"></div>
+        </section>
+
+        <section class="section" id="characters">
+          <div class="section-heading">
+            <p class="eyebrow">CHARACTERS</p>
+            <h2>角色档案</h2>
+            <p>十二司游、命神与第十三世界人物。</p>
+          </div>
+          <div class="cards-grid compact" id="characterGrid"></div>
+        </section>
+
+        <section class="section dream-section" id="dreams">
+          <div class="section-heading">
+            <p class="eyebrow">DREAM RECORDS</p>
+            <h2>梦境档案</h2>
+            <p>梦境编号记录风险等级、传播程度、时间排序和掌控权。安全不代表无害，只代表尚未显露杀机。</p>
+          </div>
+          <div class="dream-code">
+            <strong>A-0100203</strong>
+            <span>等级 / 传播程度 / 时间排序 / 掌控权</span>
+          </div>
+          <div class="cards-grid compact" id="dreamGrid"></div>
+        </section>
+
+        <section class="section" id="factions">
+          <div class="section-heading">
+            <p class="eyebrow">FACTIONS</p>
+            <h2>阵营关系</h2>
+            <p>灵层方、初始宇宙方、第十三世界，以及内部对立的司游派系。</p>
+          </div>
+          <div class="cards-grid compact" id="factionGrid"></div>
+        </section>
+
+        <section class="section map-section" id="relationship-map">
+          <div class="section-heading">
+            <p class="eyebrow">CANVAS MAP</p>
+            <h2>关系白板</h2>
+            <p>保留 Obsidian 白板中的阵营分组、人物节点和关系标注。这里用于快速看清灵层方、初始宇宙方与司游内部的冲突网络。</p>
+          </div>
+          <div class="canvas-map-wrap">
+            <div class="canvas-map" id="canvasMap" aria-label="灵层世界观关系白板"></div>
+          </div>
+        </section>
+
+        <section class="section language-section" id="language">
+          <div class="section-heading">
+            <p class="eyebrow">SCRIPT SYSTEM</p>
+            <h2>环文与世界观文字</h2>
+            <p>环文不是普通输入法，而是一套概念文字：用环数、点位、刻痕与中心标记，把世界观概念变成可读的符号结构。</p>
+          </div>
+          <div class="language-grid">
+            <article>
+              <h3>基础构成</h3>
+              <ul>
+                <li>环数：概念的层级与类别</li>
+                <li>点位：语义方向与坐标</li>
+                <li>刻痕：竖、横、斜、点、断、双</li>
+                <li>中心：空、点、圆、实、裂、锁、双、旋</li>
+              </ul>
+            </article>
+            <article class="glyph-card">
+              <div class="glyph-rings" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <h3>原未央</h3>
+              <p>起源、未完成与中心显现。相似的外部结构，通过中心状态区分意义。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section story-section" id="stories">
+          <div class="section-heading">
+            <p class="eyebrow">READING</p>
+            <h2>正文阅读</h2>
+            <p>故事章节、日志体文本与小剧场单独放置，方便读者从世界观进入叙事。</p>
+          </div>
+          <div class="story-list" id="storyList"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="detail-dialog" id="detailDialog">
+      <article class="detail-card">
+        <button class="icon-button" id="closeDialog" aria-label="关闭">×</button>
+        <div id="detailContent"></div>
+      </article>
+    </dialog>
+
+    <script src="./data/world-data.js?v=2"></script>
+    <script src="./app.js?v=2"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "lingceng-worldview-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-data.mjs",
+    "serve": "npx http-server . -p 4173 -c-1"
+  }
+}
