@@ -338,10 +338,9 @@ main {
   height: 39%;
   border-radius: 50%;
   background:
-    radial-gradient(ellipse at 50% 50%, #000 0 12%, rgba(0, 0, 0, 0.92) 28%, rgba(18, 18, 18, 0.66) 52%, rgba(64, 64, 64, 0.26) 76%, rgba(120, 120, 120, 0.04) 100%);
+    radial-gradient(ellipse at 50% 50%, #000 0 13%, rgba(0, 0, 0, 0.82) 28%, rgba(0, 0, 0, 0.42) 52%, rgba(0, 0, 0, 0.14) 74%, transparent 100%);
   box-shadow:
-    inset 0 0 20px rgba(0, 0, 0, 0.82),
-    0 0 24px rgba(0, 0, 0, 0.34);
+    inset 0 0 18px rgba(0, 0, 0, 0.46);
   transform: translate(-50%, -50%);
   transition: transform 120ms ease-out;
 }
@@ -483,7 +482,7 @@ main {
 
 .nav-card h2 {
   margin-top: 0;
-  font-size: clamp(30px, 3.6vw, 44px);
+  font-size: clamp(28px, 3.2vw, 40px);
   line-height: 1.45;
 }
 
