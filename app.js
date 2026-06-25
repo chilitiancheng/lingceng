@@ -89,6 +89,7 @@
     cardsGrid.innerHTML = entries.length
       ? entries.map(cardTemplate).join("")
       : `<div class="empty-state">没有找到匹配档案。</div>`;
+    registerSpotlightCards(cardsGrid);
     registerFadeCards(cardsGrid);
   }
 
@@ -103,6 +104,7 @@
     root.innerHTML = entries.length
       ? entries.map((entry, index) => template(entry, index)).join("")
       : `<div class="empty-state">暂无档案。</div>`;
+    registerSpotlightCards(root);
     registerFadeCards(root);
   }
 
@@ -194,6 +196,7 @@
         </section>
       </div>
     `;
+    registerSpotlightCards(root);
     registerFadeCards(root);
   }
 
@@ -528,6 +531,32 @@
     });
   }
 
+  function registerSpotlightCards(root = document) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const selectors = [
+      ".nav-card",
+      ".card",
+      ".feature-item",
+      ".story-row",
+      ".language-grid article",
+      ".relation-overview article",
+      ".relation-group",
+      ".relation-notes",
+      ".relation-list",
+      ".dream-code"
+    ].join(", ");
+
+    root.querySelectorAll(selectors).forEach((target) => {
+      if (target.classList.contains("spotlight-card")) return;
+      target.classList.add("spotlight-card");
+      target.addEventListener("mousemove", (event) => {
+        const rect = target.getBoundingClientRect();
+        target.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+        target.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+      });
+    });
+  }
+
   window.addEventListener("scroll", updateTopbarState, { passive: true });
 
   initFadeContent();
@@ -535,6 +564,7 @@
   renderCards();
   renderContentSections();
   renderCanvasMap();
+  registerSpotlightCards(document);
   registerFadeCards(document);
   initIntroCardNav();
   initOrbPupilFollow();
