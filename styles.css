@@ -945,12 +945,6 @@ main {
   font-size: clamp(28px, 5vw, 48px);
 }
 
-.detail-content {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-}
-
 .detail-content h1,
 .detail-content h2,
 .detail-content h3 {

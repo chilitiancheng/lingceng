@@ -22,6 +22,13 @@
   const dialog = $("#detailDialog");
   const detailContent = $("#detailContent");
   const topbar = $(".topbar");
+  const targetCursor = $(".target-cursor");
+
+  function setDialogCursorLayer(inDialog) {
+    if (!targetCursor || !dialog) return;
+    const targetParent = inDialog ? dialog : document.body;
+    if (targetCursor.parentElement !== targetParent) targetParent.appendChild(targetCursor);
+  }
 
   function escapeHtml(value) {
     return String(value || "")
@@ -314,8 +321,8 @@
         <p>来源：${escapeHtml(entry.path)}</p>
       </div>
     `;
-    registerSpotlightCards(detailContent);
     dialog.showModal();
+    setDialogCursorLayer(true);
     decryptDetailText();
   }
 
@@ -345,6 +352,7 @@
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
+  dialog.addEventListener("close", () => setDialogCursorLayer(false));
 
   function applySearch(value) {
     query = value;
@@ -407,7 +415,7 @@
   }
 
   function initTargetCursor() {
-    const cursor = $(".target-cursor");
+    const cursor = targetCursor;
     if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const corners = Array.from(cursor.querySelectorAll(".target-cursor-corner"));
     const dot = cursor.querySelector(".target-cursor-dot");
@@ -467,7 +475,7 @@
     });
 
     document.addEventListener("mouseover", (event) => {
-      const target = event.target.closest(targetSelector);
+      const target = dialog?.open ? event.target.closest("#closeDialog") : event.target.closest(targetSelector);
       if (!target) return;
       activeTarget = target;
       cursor.classList.add("locked");
@@ -514,8 +522,7 @@
       ".relation-group",
       ".relation-notes",
       ".relation-list",
-      ".dream-code",
-      ".detail-content"
+      ".dream-code"
     ].join(", ");
 
     root.querySelectorAll(selectors).forEach((target, index) => {
@@ -538,8 +545,7 @@
       ".relation-group",
       ".relation-notes",
       ".relation-list",
-      ".dream-code",
-      ".detail-content"
+      ".dream-code"
     ].join(", ");
 
     root.querySelectorAll(selectors).forEach((target) => {
