@@ -908,6 +908,11 @@ main {
   text-shadow: 0 0 14px rgba(217, 8, 16, 0.34);
 }
 
+.decrypted-text-done {
+  color: inherit;
+  text-shadow: none;
+}
+
 .detail-fields {
   display: flex;
   flex-wrap: wrap;

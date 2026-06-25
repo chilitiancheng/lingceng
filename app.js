@@ -255,16 +255,22 @@
   function decryptTextElement(element, delay = 0) {
     const original = element.textContent;
     if (!original || !original.trim()) return;
-    const chars = "LINGCENG0123456789命运线梦锚点司游";
-    const maxIterations = 12;
+    const chars = "ABCD1234!?LINGCENG";
+    const speed = 110;
+    const maxIterations = 20;
+    const letters = Array.from(original);
     let iteration = 0;
+
+    element.dataset.originalText = original;
+    element.textContent = letters.map((char) => (char.trim() ? "" : char)).join("");
 
     window.setTimeout(() => {
       const timer = window.setInterval(() => {
         iteration += 1;
-        element.textContent = Array.from(original).map((char, index) => {
+        const revealLimit = (iteration / maxIterations) * letters.length;
+        element.textContent = letters.map((char, index) => {
           if (char.trim() === "") return char;
-          if (index < (iteration / maxIterations) * original.length) return char;
+          if (index < revealLimit) return char;
           return chars[Math.floor(Math.random() * chars.length)];
         }).join("");
 
@@ -273,7 +279,7 @@
           element.textContent = original;
           element.classList.add("decrypted-text-done");
         }
-      }, 34);
+      }, speed);
     }, delay);
   }
 
@@ -282,7 +288,7 @@
     const targets = detailContent.querySelectorAll(".detail-content h2, .detail-content h3, .detail-content p, .detail-content li, .detail-fields .pill");
     targets.forEach((target, index) => {
       target.classList.add("decrypting-text");
-      decryptTextElement(target, Math.min(index, 18) * 28);
+      decryptTextElement(target, Math.min(index, 14) * 90);
     });
   }
 
