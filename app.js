@@ -13,6 +13,7 @@
 
   let activeCategory = "all";
   let query = "";
+  let fadeObserver = null;
 
   const $ = (selector) => document.querySelector(selector);
   const cardsGrid = $("#cardsGrid");
@@ -88,6 +89,7 @@
     cardsGrid.innerHTML = entries.length
       ? entries.map(cardTemplate).join("")
       : `<div class="empty-state">没有找到匹配档案。</div>`;
+    registerFadeCards(cardsGrid);
   }
 
   function renderSection(selector, category, template = cardTemplate) {
@@ -101,6 +103,7 @@
     root.innerHTML = entries.length
       ? entries.map((entry, index) => template(entry, index)).join("")
       : `<div class="empty-state">暂无档案。</div>`;
+    registerFadeCards(root);
   }
 
   function renderContentSections() {
@@ -191,6 +194,7 @@
         </section>
       </div>
     `;
+    registerFadeCards(root);
   }
 
   function markdownToHtml(markdown) {
@@ -471,16 +475,48 @@
     frame();
   }
 
+  function initFadeContent() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("fade-visible");
+        fadeObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  }
+
+  function registerFadeCards(root = document) {
+    if (!fadeObserver) return;
+    const selectors = [
+      ".carousel-item",
+      ".card",
+      ".feature-item",
+      ".story-row",
+      ".language-grid article",
+      ".relation-overview article",
+      ".relation-group",
+      ".relation-notes",
+      ".relation-list",
+      ".dream-code"
+    ].join(", ");
+
+    root.querySelectorAll(selectors).forEach((target, index) => {
+      if (target.classList.contains("fade-visible")) return;
+      target.classList.add("fade-card");
+      target.style.transitionDelay = `${Math.min(index, 6) * 70}ms`;
+      fadeObserver.observe(target);
+    });
+  }
+
   window.addEventListener("scroll", updateTopbarState, { passive: true });
 
+  initFadeContent();
   renderTabs();
   renderCards();
-  renderSection("#principleList", "principles");
-  renderSection("#characterGrid", "characters");
-  renderSection("#dreamGrid", "dreams");
-  renderSection("#factionGrid", "factions");
-  renderSection("#storyList", "stories", storyTemplate);
+  renderContentSections();
   renderCanvasMap();
+  registerFadeCards(document);
   initIntroCarousel();
   initTargetCursor();
   updateTopbarState();

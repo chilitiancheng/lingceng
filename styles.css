@@ -977,6 +977,23 @@ main {
   border-top: 0;
 }
 
+.fade-card {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(18px);
+  will-change: opacity, filter, transform;
+}
+
+.fade-card.fade-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+  transition:
+    opacity 900ms ease-out,
+    filter 900ms ease-out,
+    transform 900ms ease-out;
+}
+
 @media (max-width: 900px) {
   .topbar {
     min-height: 150px;
