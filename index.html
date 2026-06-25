@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>lingceng world archive</title>
     <link rel="icon" href="./assets/lingceng-icon.svg?v=1" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css?v=9" />
+    <link rel="stylesheet" href="./styles.css?v=10" />
   </head>
   <body>
     <header class="topbar" aria-label="世界观导航">
@@ -59,10 +59,6 @@
             <p class="hero-text">
               一个诞生于宇宙撕裂之后、在无序中求生的世界。梦是它降下的锚点，命运线是权柄的形状，十二司游则行走在灵层与初始宇宙的边界上。
             </p>
-            <div class="hero-actions">
-              <a class="primary-link" href="#principles">理解灵层</a>
-              <a class="secondary-link" href="#dreams">查看梦境档案</a>
-            </div>
           </div>
         </section>
 
@@ -93,18 +89,6 @@
             <button type="button" aria-label="切换到梦境锚点"></button>
             <button type="button" aria-label="切换到命运线"></button>
           </div>
-        </section>
-
-        <section class="section archive-browser">
-          <div class="section-heading">
-            <p class="eyebrow">ARCHIVE BROWSER</p>
-            <h2>档案索引</h2>
-            <p>按世界规则、角色、梦境、阵营与正文阅读整理现有设定。</p>
-          </div>
-          <div class="toolbar">
-            <div class="filter-tabs" id="filterTabs" aria-label="分类筛选"></div>
-          </div>
-          <div class="cards-grid" id="cardsGrid"></div>
         </section>
 
         <section class="section split-section" id="principles">
@@ -202,7 +186,15 @@
       </article>
     </dialog>
 
-    <script src="./data/world-data.js?v=9"></script>
-    <script src="./app.js?v=9"></script>
+    <div class="target-cursor" aria-hidden="true">
+      <span class="target-cursor-dot"></span>
+      <span class="target-cursor-corner corner-tl"></span>
+      <span class="target-cursor-corner corner-tr"></span>
+      <span class="target-cursor-corner corner-br"></span>
+      <span class="target-cursor-corner corner-bl"></span>
+    </div>
+
+    <script src="./data/world-data.js?v=10"></script>
+    <script src="./app.js?v=10"></script>
   </body>
 </html>

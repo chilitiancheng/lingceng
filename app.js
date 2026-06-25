@@ -65,6 +65,7 @@
   }
 
   function renderTabs() {
+    if (!filterTabs) return;
     const categoryOrder = ["all", "principles", "characters", "dreams", "factions", "locations", "stories", "notes"];
     filterTabs.innerHTML = categoryOrder
       .filter((category) => category === "all" || data.entries.some((entry) => entry.category === category))
@@ -82,6 +83,7 @@
   }
 
   function renderCards() {
+    if (!cardsGrid) return;
     const entries = getFilteredEntries();
     cardsGrid.innerHTML = entries.length
       ? entries.map(cardTemplate).join("")
@@ -90,12 +92,24 @@
 
   function renderSection(selector, category, template = cardTemplate) {
     const root = $(selector);
-    const entries = data.entries.filter((entry) => entry.category === category);
+    const normalized = query.trim().toLowerCase();
+    const entries = data.entries.filter((entry) => {
+      const categoryMatch = entry.category === category;
+      const queryMatch = !normalized || entry.searchText.toLowerCase().includes(normalized);
+      return categoryMatch && queryMatch;
+    });
     root.innerHTML = entries.length
       ? entries.map((entry, index) => template(entry, index)).join("")
       : `<div class="empty-state">暂无档案。</div>`;
   }
 
+  function renderContentSections() {
+    renderSection("#principleList", "principles");
+    renderSection("#characterGrid", "characters");
+    renderSection("#dreamGrid", "dreams");
+    renderSection("#factionGrid", "factions");
+    renderSection("#storyList", "stories", storyTemplate);
+  }
   function renderCanvasMap() {
     const root = $("#canvasMap");
     if (!root) return;
@@ -283,9 +297,10 @@
     if (event.target === dialog) dialog.close();
   });
 
-  searchInput.addEventListener("input", (event) => {
+  searchInput?.addEventListener("input", (event) => {
     query = event.target.value;
     renderCards();
+    renderContentSections();
   });
 
   function updateTopbarState() {
@@ -371,6 +386,91 @@
     start();
   }
 
+  function initTargetCursor() {
+    const cursor = $(".target-cursor");
+    if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const corners = Array.from(cursor.querySelectorAll(".target-cursor-corner"));
+    const dot = cursor.querySelector(".target-cursor-dot");
+    const targetSelector = "a, button, input, .card, .feature-item, .story-row, .relation-chip, .carousel-viewport";
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let cursorX = mouseX;
+    let cursorY = mouseY;
+    let activeTarget = null;
+    let rotation = 0;
+
+    document.body.classList.add("cursor-ready");
+
+    const setCorner = (corner, x, y) => {
+      corner.style.transform = `translate(${x}px, ${y}px)`;
+    };
+
+    const resetCorners = () => {
+      setCorner(corners[0], -24, -24);
+      setCorner(corners[1], 10, -24);
+      setCorner(corners[2], 10, 10);
+      setCorner(corners[3], -24, 10);
+    };
+
+    const lockToTarget = (target) => {
+      const rect = target.getBoundingClientRect();
+      const size = 14;
+      setCorner(corners[0], rect.left - cursorX - 4, rect.top - cursorY - 4);
+      setCorner(corners[1], rect.right - cursorX - size + 4, rect.top - cursorY - 4);
+      setCorner(corners[2], rect.right - cursorX - size + 4, rect.bottom - cursorY - size + 4);
+      setCorner(corners[3], rect.left - cursorX - 4, rect.bottom - cursorY - size + 4);
+    };
+
+    const frame = () => {
+      cursorX += (mouseX - cursorX) * 0.22;
+      cursorY += (mouseY - cursorY) * 0.22;
+      rotation = activeTarget ? 0 : rotation + 1.8;
+      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) rotate(${rotation}deg)`;
+      if (activeTarget && document.body.contains(activeTarget)) lockToTarget(activeTarget);
+      window.requestAnimationFrame(frame);
+    };
+
+    window.addEventListener("mousemove", (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      cursor.classList.add("active");
+    });
+
+    window.addEventListener("mousedown", () => {
+      if (dot) dot.style.transform = "translate(-50%, -50%) scale(0.72)";
+      cursor.style.scale = "0.94";
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (dot) dot.style.transform = "translate(-50%, -50%) scale(1)";
+      cursor.style.scale = "1";
+    });
+
+    document.addEventListener("mouseover", (event) => {
+      const target = event.target.closest(targetSelector);
+      if (!target) return;
+      activeTarget = target;
+      cursor.classList.add("locked");
+      lockToTarget(target);
+    });
+
+    document.addEventListener("mouseout", (event) => {
+      if (!activeTarget) return;
+      const next = event.relatedTarget;
+      if (next && activeTarget.contains(next)) return;
+      activeTarget = null;
+      cursor.classList.remove("locked");
+      resetCorners();
+    });
+
+    window.addEventListener("scroll", () => {
+      if (activeTarget) lockToTarget(activeTarget);
+    }, { passive: true });
+
+    resetCorners();
+    frame();
+  }
+
   window.addEventListener("scroll", updateTopbarState, { passive: true });
 
   renderTabs();
@@ -382,5 +482,6 @@
   renderSection("#storyList", "stories", storyTemplate);
   renderCanvasMap();
   initIntroCarousel();
+  initTargetCursor();
   updateTopbarState();
 })();
