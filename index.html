@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>lingceng world archive</title>
     <link rel="icon" href="./assets/lingceng-icon.svg?v=1" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css?v=8" />
+    <link rel="stylesheet" href="./styles.css?v=9" />
   </head>
   <body>
     <header class="topbar" aria-label="世界观导航">
@@ -66,22 +66,33 @@
           </div>
         </section>
 
-        <section class="section intro-grid" aria-label="世界观概览">
-          <article>
-            <span class="tag">底层原理</span>
-            <h2>量子引力修正与反弹膨胀</h2>
-            <p>灵层并非普通异世界。它是母宇宙撕裂后分离出的残缺宇宙，继承了更混乱、更高熵的量子涨落。</p>
-          </article>
-          <article>
-            <span class="tag danger">梦境锚点</span>
-            <h2>梦让两界规则重叠</h2>
-            <p>司游通过梦在初始宇宙设立锚点，让两个世界的规则开始重叠。梦境越深入，边界越难回收。</p>
-          </article>
-          <article>
-            <span class="tag wine">命运线</span>
-            <h2>无法跳出的最高位概念</h2>
-            <p>命运先于一切存在。命运线是命运赠与个体的具体化权柄，也是异能、权柄与反叛的源头。</p>
-          </article>
+        <section class="section intro-carousel" aria-label="世界观概览">
+          <button class="carousel-control prev" type="button" aria-label="上一条概览">‹</button>
+          <div class="carousel-viewport" id="introCarousel">
+            <div class="carousel-track">
+              <article class="carousel-item">
+                <span class="tag">底层原理</span>
+                <h2>量子引力修正与反弹膨胀</h2>
+                <p>灵层并非普通异世界。它是母宇宙撕裂后分离出的残缺宇宙，继承了更混乱、更高熵的量子涨落。</p>
+              </article>
+              <article class="carousel-item">
+                <span class="tag danger">梦境锚点</span>
+                <h2>梦让两界规则重叠</h2>
+                <p>司游通过梦在初始宇宙设立锚点，让两个世界的规则开始重叠。梦境越深入，边界越难回收。</p>
+              </article>
+              <article class="carousel-item">
+                <span class="tag wine">命运线</span>
+                <h2>无法跳出的最高位概念</h2>
+                <p>命运先于一切存在。命运线是命运赠与个体的具体化权柄，也是异能、权柄与反叛的源头。</p>
+              </article>
+            </div>
+          </div>
+          <button class="carousel-control next" type="button" aria-label="下一条概览">›</button>
+          <div class="carousel-indicators" aria-label="概览切换">
+            <button type="button" class="active" aria-label="切换到底层原理"></button>
+            <button type="button" aria-label="切换到梦境锚点"></button>
+            <button type="button" aria-label="切换到命运线"></button>
+          </div>
         </section>
 
         <section class="section archive-browser">
@@ -191,7 +202,7 @@
       </article>
     </dialog>
 
-    <script src="./data/world-data.js?v=8"></script>
-    <script src="./app.js?v=8"></script>
+    <script src="./data/world-data.js?v=9"></script>
+    <script src="./app.js?v=9"></script>
   </body>
 </html>

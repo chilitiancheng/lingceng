@@ -292,6 +292,85 @@
     topbar?.classList.toggle("scrolled", window.scrollY > 24);
   }
 
+  function initIntroCarousel() {
+    const viewport = $("#introCarousel");
+    if (!viewport) return;
+    const track = viewport.querySelector(".carousel-track");
+    const items = Array.from(viewport.querySelectorAll(".carousel-item"));
+    const section = viewport.closest(".intro-carousel");
+    const prev = section?.querySelector(".carousel-control.prev");
+    const next = section?.querySelector(".carousel-control.next");
+    const indicators = Array.from(section?.querySelectorAll(".carousel-indicators button") || []);
+    if (!track || items.length < 2) return;
+
+    let active = 0;
+    let timer = null;
+    let isPaused = false;
+    let dragStart = 0;
+    let dragDelta = 0;
+
+    const render = () => {
+      const viewportWidth = viewport.clientWidth;
+      const itemWidth = items[0].getBoundingClientRect().width;
+      const gap = 1;
+      const offset = Math.max(0, (viewportWidth - itemWidth) / 2);
+      track.style.transform = `translate3d(${offset - active * (itemWidth + gap)}px, 0, 0)`;
+      items.forEach((item, index) => item.classList.toggle("active", index === active));
+      indicators.forEach((indicator, index) => indicator.classList.toggle("active", index === active));
+    };
+
+    const goTo = (index) => {
+      active = (index + items.length) % items.length;
+      render();
+    };
+
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    };
+
+    const start = () => {
+      stop();
+      timer = window.setInterval(() => {
+        if (!isPaused) goTo(active + 1);
+      }, 3200);
+    };
+
+    prev?.addEventListener("click", () => goTo(active - 1));
+    next?.addEventListener("click", () => goTo(active + 1));
+    indicators.forEach((indicator, index) => indicator.addEventListener("click", () => goTo(index)));
+
+    section?.addEventListener("mouseenter", () => {
+      isPaused = true;
+    });
+    section?.addEventListener("mouseleave", () => {
+      isPaused = false;
+    });
+
+    viewport.addEventListener("pointerdown", (event) => {
+      dragStart = event.clientX;
+      dragDelta = 0;
+      viewport.classList.add("dragging");
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+
+    viewport.addEventListener("pointermove", (event) => {
+      if (!viewport.classList.contains("dragging")) return;
+      dragDelta = event.clientX - dragStart;
+    });
+
+    viewport.addEventListener("pointerup", (event) => {
+      viewport.classList.remove("dragging");
+      viewport.releasePointerCapture?.(event.pointerId);
+      if (Math.abs(dragDelta) > 48) goTo(active + (dragDelta < 0 ? 1 : -1));
+      dragDelta = 0;
+    });
+
+    window.addEventListener("resize", render);
+    render();
+    start();
+  }
+
   window.addEventListener("scroll", updateTopbarState, { passive: true });
 
   renderTabs();
@@ -302,5 +381,6 @@
   renderSection("#factionGrid", "factions");
   renderSection("#storyList", "stories", storyTemplate);
   renderCanvasMap();
+  initIntroCarousel();
   updateTopbarState();
 })();
