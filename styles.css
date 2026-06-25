@@ -833,6 +833,7 @@ main {
   padding: 0;
   color: var(--text);
   background: transparent;
+  overflow: hidden;
 }
 
 .detail-dialog::backdrop {
@@ -843,9 +844,11 @@ main {
   position: relative;
   padding: 28px;
   background: #0d1114;
+  height: min(86vh, 900px);
   max-height: min(86vh, 900px);
   overflow: auto;
   animation: boardFade 180ms ease both;
+  scrollbar-color: rgba(232, 236, 233, 0.58) rgba(255, 255, 255, 0.08);
 }
 
 .icon-button {
@@ -894,6 +897,15 @@ main {
   border: 1px solid var(--line);
   padding: 14px;
   background: rgba(255, 255, 255, 0.04);
+}
+
+.decrypting-text {
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.decrypting-text:not(.decrypted-text-done) {
+  color: #ff6b70;
+  text-shadow: 0 0 14px rgba(217, 8, 16, 0.34);
 }
 
 .detail-fields {
@@ -1124,6 +1136,7 @@ main {
   }
 
   .detail-card {
+    height: min(82vh, 760px);
     max-height: min(82vh, 760px);
     border-radius: 12px;
     padding: 24px;

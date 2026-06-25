@@ -252,6 +252,40 @@
     return data.entries.find((entry) => entry.title === clean || entry.basename === clean || entry.path.endsWith(`${clean}.md`));
   }
 
+  function decryptTextElement(element, delay = 0) {
+    const original = element.textContent;
+    if (!original || !original.trim()) return;
+    const chars = "LINGCENG0123456789命运线梦锚点司游";
+    const maxIterations = 12;
+    let iteration = 0;
+
+    window.setTimeout(() => {
+      const timer = window.setInterval(() => {
+        iteration += 1;
+        element.textContent = Array.from(original).map((char, index) => {
+          if (char.trim() === "") return char;
+          if (index < (iteration / maxIterations) * original.length) return char;
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join("");
+
+        if (iteration >= maxIterations) {
+          window.clearInterval(timer);
+          element.textContent = original;
+          element.classList.add("decrypted-text-done");
+        }
+      }, 34);
+    }, delay);
+  }
+
+  function decryptDetailText() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const targets = detailContent.querySelectorAll(".detail-content h2, .detail-content h3, .detail-content p, .detail-content li, .detail-fields .pill");
+    targets.forEach((target, index) => {
+      target.classList.add("decrypting-text");
+      decryptTextElement(target, Math.min(index, 18) * 28);
+    });
+  }
+
   function openEntry(entry) {
     if (!entry) return;
     const fields = Object.entries(entry.fields || {});
@@ -272,6 +306,7 @@
       </div>
     `;
     dialog.showModal();
+    decryptDetailText();
   }
 
   document.addEventListener("click", (event) => {
