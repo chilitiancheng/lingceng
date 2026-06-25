@@ -19,6 +19,7 @@
   const cardsGrid = $("#cardsGrid");
   const filterTabs = $("#filterTabs");
   const searchInput = $("#searchInput");
+  const searchButton = $(".search-button");
   const dialog = $("#detailDialog");
   const detailContent = $("#detailContent");
   const topbar = $(".topbar");
@@ -342,10 +343,21 @@
     if (event.target === dialog) dialog.close();
   });
 
-  searchInput?.addEventListener("input", (event) => {
-    query = event.target.value;
+  function applySearch(value) {
+    query = value;
     renderCards();
     renderContentSections();
+  }
+
+  searchInput?.addEventListener("input", (event) => {
+    applySearch(event.target.value);
+  });
+
+  searchButton?.addEventListener("click", () => {
+    searchInput?.focus();
+    applySearch(searchInput?.value || "");
+    const target = document.querySelector("#principles, #characters, #dreams");
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   function updateTopbarState() {
@@ -370,6 +382,41 @@
       setOpen(!nav.classList.contains("open"));
     });
   }
+
+  function initOrbPupilFollow() {
+    const orb = $(".hero-orb");
+    const pupil = $(".orb-pupil");
+    if (!orb || !pupil) return;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const setTarget = (event) => {
+      const rect = orb.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+      targetX = Math.max(-1, Math.min(1, x)) * 18;
+      targetY = Math.max(-1, Math.min(1, y)) * 14;
+    };
+
+    const resetTarget = () => {
+      targetX = 0;
+      targetY = 0;
+    };
+
+    const animate = () => {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      pupil.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px))`;
+      window.requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", setTarget);
+    orb.addEventListener("mouseleave", resetTarget);
+    animate();
+  }
+
   function initTargetCursor() {
     const cursor = $(".target-cursor");
     if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -498,6 +545,7 @@
   renderCanvasMap();
   registerFadeCards(document);
   initIntroCardNav();
+  initOrbPupilFollow();
   initTargetCursor();
   updateTopbarState();
 })();

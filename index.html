@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>lingceng world archive</title>
     <link rel="icon" href="./assets/lingceng-icon.svg?v=1" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css?v=14" />
+    <link rel="stylesheet" href="./styles.css?v=15" />
   </head>
   <body>
     <header class="topbar" aria-label="世界观导航">
@@ -34,10 +34,11 @@
           <a href="#language">环文</a>
           <a href="#stories">正文阅读</a>
         </nav>
-        <label class="search-box top-search">
+        <div class="search-box top-search" role="search">
           <span>搜索</span>
           <input id="searchInput" type="search" placeholder="搜索角色、梦境编号、阵营" />
-        </label>
+          <button class="search-button" type="button" aria-label="搜索"><span aria-hidden="true"></span></button>
+        </div>
       </div>
 
     </header>
@@ -46,6 +47,7 @@
         <section class="hero" id="overview">
           <div class="hero-copy">
             <div class="hero-orb" aria-hidden="true">
+              <span class="orb-pupil"></span>
               <svg class="orb-text-ring" viewBox="0 0 260 260">
                 <defs>
                   <path id="lingcengOrbit" d="M 130 130 m -116 0 a 116 116 0 1 1 232 0 a 116 116 0 1 1 -232 0" />
@@ -193,7 +195,7 @@
       <span class="target-cursor-corner corner-bl"></span>
     </div>
 
-    <script src="./data/world-data.js?v=14"></script>
-    <script src="./app.js?v=14"></script>
+    <script src="./data/world-data.js?v=15"></script>
+    <script src="./app.js?v=15"></script>
   </body>
 </html>
