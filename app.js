@@ -19,7 +19,6 @@
   const cardsGrid = $("#cardsGrid");
   const filterTabs = $("#filterTabs");
   const searchInput = $("#searchInput");
-  const searchButton = $(".search-button");
   const dialog = $("#detailDialog");
   const detailContent = $("#detailContent");
   const topbar = $(".topbar");
@@ -351,13 +350,6 @@
 
   searchInput?.addEventListener("input", (event) => {
     applySearch(event.target.value);
-  });
-
-  searchButton?.addEventListener("click", () => {
-    searchInput?.focus();
-    applySearch(searchInput?.value || "");
-    const target = document.querySelector("#principles, #characters, #dreams");
-    target?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   function updateTopbarState() {
