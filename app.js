@@ -390,8 +390,8 @@
   function initOrbMagnet() {
     const wrapper = $(".hero-orb-magnet");
     if (!wrapper || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const padding = 90;
-    const magnetStrength = 18;
+    const padding = 230;
+    const magnetStrength = 14;
 
     window.addEventListener("mousemove", (event) => {
       const rect = wrapper.getBoundingClientRect();
@@ -407,8 +407,8 @@
         return;
       }
 
-      const offsetX = (event.clientX - centerX) / magnetStrength;
-      const offsetY = (event.clientY - centerY) / magnetStrength;
+      const offsetX = Math.max(-28, Math.min(28, (event.clientX - centerX) / magnetStrength));
+      const offsetY = Math.max(-22, Math.min(22, (event.clientY - centerY) / magnetStrength));
       wrapper.classList.add("magnet-active");
       wrapper.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
     });
@@ -428,18 +428,44 @@
     let pointerX = 0;
     let pointerY = 0;
     let pointerActive = false;
+    let summonActive = false;
+    let summonX = 0;
+    let summonY = 0;
+    let lastSummonSpawn = 0;
     let frameId = 0;
 
-    const makeParticle = () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      z: Math.random(),
-      vx: (Math.random() - 0.5) * 0.16,
-      vy: (Math.random() - 0.5) * 0.16,
-      size: 1.2 + Math.random() * 3.2,
-      alpha: 0.2 + Math.random() * 0.56,
-      phase: Math.random() * Math.PI * 2
-    });
+    const placeAtEdge = (particle) => {
+      const side = Math.floor(Math.random() * 4);
+      if (side === 0) {
+        particle.x = Math.random() * width;
+        particle.y = -24;
+      } else if (side === 1) {
+        particle.x = width + 24;
+        particle.y = Math.random() * height;
+      } else if (side === 2) {
+        particle.x = Math.random() * width;
+        particle.y = height + 24;
+      } else {
+        particle.x = -24;
+        particle.y = Math.random() * height;
+      }
+      particle.vx = (Math.random() - 0.5) * 0.2;
+      particle.vy = (Math.random() - 0.5) * 0.2;
+    };
+
+    const makeParticle = () => {
+      const particle = {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random(),
+        vx: (Math.random() - 0.5) * 0.16,
+        vy: (Math.random() - 0.5) * 0.16,
+        size: 1.2 + Math.random() * 3.2,
+        alpha: 0.2 + Math.random() * 0.56,
+        phase: Math.random() * Math.PI * 2
+      };
+      return particle;
+    };
 
     const resize = () => {
       const rect = hero.getBoundingClientRect();
@@ -460,24 +486,51 @@
       pointerX = event.clientX - rect.left;
       pointerY = event.clientY - rect.top;
       pointerActive = pointerX >= 0 && pointerX <= width && pointerY >= 0 && pointerY <= height;
+      const orb = $(".hero-orb-magnet");
+      if (!orb) {
+        summonActive = false;
+        return;
+      }
+      const orbRect = orb.getBoundingClientRect();
+      summonX = orbRect.left - rect.left + orbRect.width / 2;
+      summonY = orbRect.top - rect.top + orbRect.height / 2;
+      const distX = Math.abs(event.clientX - (orbRect.left + orbRect.width / 2));
+      const distY = Math.abs(event.clientY - (orbRect.top + orbRect.height / 2));
+      summonActive = distX < orbRect.width / 2 + 230 && distY < orbRect.height / 2 + 230;
     };
 
     const draw = (time) => {
       context.clearRect(0, 0, width, height);
+      if (summonActive && time - lastSummonSpawn > 95) {
+        lastSummonSpawn = time;
+        for (let i = 0; i < 10; i += 1) {
+          const particle = particles[Math.floor(Math.random() * particles.length)];
+          placeAtEdge(particle);
+        }
+      }
+
       particles.forEach((particle) => {
-        if (pointerActive) {
+        if (summonActive) {
+          const dx = summonX - particle.x;
+          const dy = summonY - particle.y;
+          const distance = Math.max(24, Math.hypot(dx, dy));
+          const force = Math.min(0.045, 1.15 / distance);
+          particle.vx += dx * force * (0.8 + particle.z);
+          particle.vy += dy * force * (0.8 + particle.z);
+          if (distance < 26) placeAtEdge(particle);
+        } else if (pointerActive) {
           const dx = pointerX - particle.x;
           const dy = pointerY - particle.y;
           const distance = Math.max(80, Math.hypot(dx, dy));
-          const force = Math.min(1.6, 120 / distance) * 0.012;
-          particle.vx += dx * force * (0.35 + particle.z);
-          particle.vy += dy * force * (0.35 + particle.z);
+          const force = Math.min(1.6, 120 / distance) * 0.008;
+          particle.vx += dx * force * (0.24 + particle.z);
+          particle.vy += dy * force * (0.24 + particle.z);
         }
 
         particle.vx += Math.sin(time * 0.00018 + particle.phase) * 0.004;
         particle.vy += Math.cos(time * 0.00016 + particle.phase) * 0.004;
-        particle.vx *= 0.965;
-        particle.vy *= 0.965;
+        particle.vx *= summonActive ? 0.982 : 0.965;
+        particle.vy *= summonActive ? 0.982 : 0.965;
         particle.x += particle.vx;
         particle.y += particle.vy;
 
@@ -500,6 +553,7 @@
     hero.addEventListener("mousemove", updatePointer);
     hero.addEventListener("mouseleave", () => {
       pointerActive = false;
+      summonActive = false;
     });
     frameId = window.requestAnimationFrame(draw);
   }
