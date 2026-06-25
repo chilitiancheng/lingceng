@@ -412,6 +412,33 @@
     animate();
   }
 
+  function initOrbMagnet() {
+    const wrapper = $(".hero-orb-magnet");
+    if (!wrapper || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const padding = 90;
+    const magnetStrength = 18;
+
+    window.addEventListener("mousemove", (event) => {
+      const rect = wrapper.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distX = Math.abs(centerX - event.clientX);
+      const distY = Math.abs(centerY - event.clientY);
+      const active = distX < rect.width / 2 + padding && distY < rect.height / 2 + padding;
+
+      if (!active) {
+        wrapper.classList.remove("magnet-active");
+        wrapper.style.transform = "translate3d(0, 0, 0)";
+        return;
+      }
+
+      const offsetX = (event.clientX - centerX) / magnetStrength;
+      const offsetY = (event.clientY - centerY) / magnetStrength;
+      wrapper.classList.add("magnet-active");
+      wrapper.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+    });
+  }
+
   function initTargetCursor() {
     const cursor = $(".target-cursor");
     if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -567,6 +594,7 @@
   registerSpotlightCards(document);
   registerFadeCards(document);
   initIntroCardNav();
+  initOrbMagnet();
   initOrbPupilFollow();
   initTargetCursor();
   updateTopbarState();

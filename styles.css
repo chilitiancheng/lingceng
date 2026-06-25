@@ -316,6 +316,18 @@ main {
   animation: archiveReveal 950ms ease 180ms both;
 }
 
+.hero-orb-magnet {
+  position: relative;
+  display: grid;
+  place-items: center;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+}
+
+.hero-orb-magnet.magnet-active {
+  transition: transform 0.3s ease-out;
+}
+
 .hero-orb {
   position: relative;
   width: clamp(260px, 38vw, 450px);
