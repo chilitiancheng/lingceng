@@ -86,7 +86,8 @@ input {
   body.cursor-ready a,
   body.cursor-ready button,
   body.cursor-ready input,
-  body.cursor-ready .carousel-viewport {
+  body.cursor-ready .card-nav,
+  body.cursor-ready .nav-card {
     cursor: none;
   }
 }
@@ -368,14 +369,14 @@ main {
 }
 
 .section-heading h2,
-.carousel-item h2 {
+.nav-card h2 {
   margin: 8px 0 10px;
-  font-size: clamp(26px, 4vw, 42px);
+  font-size: clamp(24px, 3.4vw, 38px);
   letter-spacing: 0;
 }
 
 .section-heading p,
-.carousel-item p,
+.nav-card p,
 .card p,
 .feature-item p,
 .story-list p,
@@ -385,105 +386,119 @@ main {
   line-height: 1.75;
 }
 
-.intro-carousel {
-  position: relative;
-  overflow: hidden;
-  padding-left: 0;
-  padding-right: 0;
+.intro-card-nav {
+  padding-top: 52px;
+  padding-bottom: 52px;
   background: rgba(8, 10, 12, 0.42);
 }
 
-.carousel-viewport {
+.card-nav {
+  width: min(920px, calc(100vw - 40px));
+  height: 60px;
+  margin: 0 auto;
   overflow: hidden;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  cursor: grab;
-  perspective: 1200px;
+  border: 1px solid rgba(217, 8, 16, 0.32);
+  border-radius: 12px;
+  background: rgba(12, 14, 16, 0.94);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+  transition: height 420ms cubic-bezier(0.22, 0.9, 0.2, 1), border-color 220ms ease;
 }
 
-.carousel-viewport.dragging {
-  cursor: grabbing;
+.card-nav.open {
+  height: 300px;
+  border-color: rgba(217, 8, 16, 0.55);
 }
 
-.carousel-track {
-  display: flex;
-  gap: 1px;
-  transform: translate3d(0, 0, 0);
-  transition: transform 520ms cubic-bezier(0.22, 0.9, 0.2, 1);
-  will-change: transform;
+.card-nav-top {
+  height: 60px;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  align-items: center;
+  padding: 0 16px;
 }
 
-.carousel-item {
-  flex: 0 0 min(68vw, 620px);
-  min-height: 250px;
-  padding: 30px clamp(24px, 3vw, 36px);
-  border-left: 1px solid rgba(232, 236, 233, 0.08);
-  border-right: 1px solid rgba(232, 236, 233, 0.08);
-  background: rgba(16, 20, 23, 0.9);
-  transform: scale(0.92) rotateY(18deg);
-  transform-origin: center;
-  opacity: 0.58;
-  transition: transform 520ms cubic-bezier(0.22, 0.9, 0.2, 1), opacity 520ms ease, border-color 520ms ease, background 520ms ease;
-}
-
-.carousel-item.active {
-  transform: scale(1) rotateY(0deg);
-  opacity: 1;
-  border-color: rgba(217, 8, 16, 0.24);
-  background: rgba(16, 20, 23, 0.98);
-}
-
-.carousel-control {
-  position: absolute;
-  top: 50%;
-  z-index: 3;
-  width: 42px;
-  height: 54px;
-  border: 1px solid var(--line);
-  background: rgba(8, 10, 12, 0.72);
-  color: var(--muted);
-  font-size: 36px;
-  line-height: 1;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.carousel-control:hover {
-  color: var(--text);
-  border-color: rgba(217, 8, 16, 0.42);
-}
-
-.carousel-control.prev {
-  left: 14px;
-}
-
-.carousel-control.next {
-  right: 14px;
-}
-
-.intro-carousel .carousel-indicators {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  z-index: 4;
-  display: flex;
-  gap: 10px;
-  transform: translateX(-50%);
-}
-
-.intro-carousel .carousel-indicators button {
-  width: 8px;
-  height: 8px;
-  padding: 0;
+.hamburger-menu {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  align-content: center;
+  gap: 7px;
   border: 0;
-  border-radius: 50%;
-  background: rgba(232, 236, 233, 0.32);
+  background: transparent;
+  color: #ff6b70;
   cursor: pointer;
 }
 
-.intro-carousel .carousel-indicators button.active {
-  background: var(--text);
-  transform: scale(1.28);
+.hamburger-line {
+  width: 30px;
+  height: 2px;
+  display: block;
+  background: currentColor;
+  transition: transform 240ms ease, opacity 180ms ease;
+}
+
+.card-nav.open .hamburger-line:first-child {
+  transform: translateY(4.5px) rotate(45deg);
+}
+
+.card-nav.open .hamburger-line:last-child {
+  transform: translateY(-4.5px) rotate(-45deg);
+}
+
+.card-nav-title {
+  justify-self: center;
+  color: #f2d7d8;
+  font-family: Didot, "Bodoni 72", "Bodoni MT", "Times New Roman", "Songti SC", serif;
+  font-size: clamp(22px, 3vw, 34px);
+  font-style: italic;
+  text-shadow: 0 0 18px rgba(217, 8, 16, 0.28);
+}
+
+.card-nav-content {
+  height: 240px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 8px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.card-nav.open .card-nav-content {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-card {
+  min-width: 0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(232, 236, 233, 0.1);
+  border-radius: 8px;
+  background: rgba(20, 22, 24, 0.96);
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 360ms ease, transform 420ms cubic-bezier(0.22, 0.9, 0.2, 1), border-color 220ms ease;
+}
+
+.card-nav.open .nav-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-nav.open .nav-card:nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.card-nav.open .nav-card:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.nav-card:hover {
+  border-color: rgba(217, 8, 16, 0.46);
 }
 
 .tag {
@@ -1076,15 +1091,18 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .carousel-item {
-    flex-basis: min(84vw, 560px);
-    min-height: 280px;
+  .card-nav.open {
+    height: auto;
+    min-height: 420px;
   }
 
-  .carousel-control {
-    width: 34px;
-    height: 46px;
-    font-size: 28px;
+  .card-nav-content {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .nav-card {
+    min-height: 112px;
   }
 
   .toolbar {
