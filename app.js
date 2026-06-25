@@ -314,6 +314,7 @@
         <p>来源：${escapeHtml(entry.path)}</p>
       </div>
     `;
+    registerSpotlightCards(detailContent);
     dialog.showModal();
     decryptDetailText();
   }
@@ -513,7 +514,8 @@
       ".relation-group",
       ".relation-notes",
       ".relation-list",
-      ".dream-code"
+      ".dream-code",
+      ".detail-content"
     ].join(", ");
 
     root.querySelectorAll(selectors).forEach((target, index) => {
@@ -536,7 +538,8 @@
       ".relation-group",
       ".relation-notes",
       ".relation-list",
-      ".dream-code"
+      ".dream-code",
+      ".detail-content"
     ].join(", ");
 
     root.querySelectorAll(selectors).forEach((target) => {
