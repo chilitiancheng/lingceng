@@ -414,6 +414,96 @@
     });
   }
 
+  function initHeroParticles() {
+    const canvas = $("#heroParticles");
+    const hero = $("#overview");
+    if (!canvas || !hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let particles = [];
+    let pointerX = 0;
+    let pointerY = 0;
+    let pointerActive = false;
+    let frameId = 0;
+
+    const makeParticle = () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      z: Math.random(),
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: (Math.random() - 0.5) * 0.16,
+      size: 1.2 + Math.random() * 3.2,
+      alpha: 0.2 + Math.random() * 0.56,
+      phase: Math.random() * Math.PI * 2
+    });
+
+    const resize = () => {
+      const rect = hero.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.min(360, Math.max(130, Math.round((width * height) / 3800)));
+      particles = Array.from({ length: count }, makeParticle);
+    };
+
+    const updatePointer = (event) => {
+      const rect = hero.getBoundingClientRect();
+      pointerX = event.clientX - rect.left;
+      pointerY = event.clientY - rect.top;
+      pointerActive = pointerX >= 0 && pointerX <= width && pointerY >= 0 && pointerY <= height;
+    };
+
+    const draw = (time) => {
+      context.clearRect(0, 0, width, height);
+      particles.forEach((particle) => {
+        if (pointerActive) {
+          const dx = pointerX - particle.x;
+          const dy = pointerY - particle.y;
+          const distance = Math.max(80, Math.hypot(dx, dy));
+          const force = Math.min(1.6, 120 / distance) * 0.012;
+          particle.vx += dx * force * (0.35 + particle.z);
+          particle.vy += dy * force * (0.35 + particle.z);
+        }
+
+        particle.vx += Math.sin(time * 0.00018 + particle.phase) * 0.004;
+        particle.vy += Math.cos(time * 0.00016 + particle.phase) * 0.004;
+        particle.vx *= 0.965;
+        particle.vy *= 0.965;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        if (particle.x < -20) particle.x = width + 20;
+        if (particle.x > width + 20) particle.x = -20;
+        if (particle.y < -20) particle.y = height + 20;
+        if (particle.y > height + 20) particle.y = -20;
+
+        const pulse = 0.75 + Math.sin(time * 0.001 + particle.phase) * 0.25;
+        context.beginPath();
+        context.fillStyle = `rgba(255, 24, 32, ${particle.alpha * pulse})`;
+        context.arc(particle.x, particle.y, particle.size * (0.65 + particle.z), 0, Math.PI * 2);
+        context.fill();
+      });
+      frameId = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    hero.addEventListener("mousemove", updatePointer);
+    hero.addEventListener("mouseleave", () => {
+      pointerActive = false;
+    });
+    frameId = window.requestAnimationFrame(draw);
+  }
+
   function initTargetCursor() {
     const cursor = targetCursor;
     if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -569,6 +659,7 @@
   registerSpotlightCards(document);
   registerFadeCards(document);
   initIntroCardNav();
+  initHeroParticles();
   initOrbMagnet();
   initTargetCursor();
   updateTopbarState();
