@@ -389,29 +389,62 @@
 
   function initOrbMagnet() {
     const wrapper = $(".hero-orb-magnet");
-    if (!wrapper || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const hero = $("#overview");
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const touchPointer = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (!wrapper || !hero || (!finePointer && !touchPointer)) return;
     const padding = 230;
     const magnetStrength = 14;
+    let lastTouchTime = 0;
 
-    window.addEventListener("mousemove", (event) => {
+    const resetMagnet = () => {
+      wrapper.classList.remove("magnet-active");
+      wrapper.style.transform = "translate3d(0, 0, 0)";
+    };
+
+    const updateMagnet = (clientX, clientY) => {
       const rect = wrapper.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const distX = Math.abs(centerX - event.clientX);
-      const distY = Math.abs(centerY - event.clientY);
+      const distX = Math.abs(centerX - clientX);
+      const distY = Math.abs(centerY - clientY);
       const active = distX < rect.width / 2 + padding && distY < rect.height / 2 + padding;
 
       if (!active) {
-        wrapper.classList.remove("magnet-active");
-        wrapper.style.transform = "translate3d(0, 0, 0)";
+        resetMagnet();
         return;
       }
 
-      const offsetX = Math.max(-28, Math.min(28, (event.clientX - centerX) / magnetStrength));
-      const offsetY = Math.max(-22, Math.min(22, (event.clientY - centerY) / magnetStrength));
+      const offsetX = Math.max(-28, Math.min(28, (clientX - centerX) / magnetStrength));
+      const offsetY = Math.max(-22, Math.min(22, (clientY - centerY) / magnetStrength));
       wrapper.classList.add("magnet-active");
       wrapper.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
-    });
+    };
+
+    if (finePointer) {
+      window.addEventListener("mousemove", (event) => {
+        if (Date.now() - lastTouchTime < 700) return;
+        updateMagnet(event.clientX, event.clientY);
+      });
+    }
+
+    if (touchPointer) {
+      const updateTouchMagnet = (event) => {
+        lastTouchTime = Date.now();
+        if (event.touches.length > 1) {
+          resetMagnet();
+          return;
+        }
+        const touch = event.touches[0] || event.changedTouches[0];
+        if (!touch) return;
+        updateMagnet(touch.clientX, touch.clientY);
+      };
+
+      hero.addEventListener("touchstart", updateTouchMagnet, { passive: true });
+      hero.addEventListener("touchmove", updateTouchMagnet, { passive: true });
+      hero.addEventListener("touchend", resetMagnet, { passive: true });
+      hero.addEventListener("touchcancel", resetMagnet, { passive: true });
+    }
   }
 
   function initHeroParticles() {
@@ -432,6 +465,7 @@
     let summonX = 0;
     let summonY = 0;
     let lastSummonSpawn = 0;
+    let lastTouchTime = 0;
     let frameId = 0;
 
     const placeAtEdge = (particle) => {
@@ -499,6 +533,31 @@
       summonActive = distX < orbRect.width / 2 + 230 && distY < orbRect.height / 2 + 230;
     };
 
+    const resetPointer = () => {
+      pointerActive = false;
+      summonActive = false;
+    };
+
+    const updateTouchPointer = (event) => {
+      lastTouchTime = Date.now();
+      if (event.touches.length > 1) {
+        resetPointer();
+        return;
+      }
+      const touch = event.touches[0] || event.changedTouches[0];
+      if (!touch) return;
+      updatePointer(touch);
+    };
+
+    const endTouchPointer = (event) => {
+      const touch = event.touches[0];
+      if (touch) {
+        updatePointer(touch);
+        return;
+      }
+      resetPointer();
+    };
+
     const draw = (time) => {
       context.clearRect(0, 0, width, height);
       if (summonActive && time - lastSummonSpawn > 95) {
@@ -550,11 +609,15 @@
 
     resize();
     window.addEventListener("resize", resize);
-    hero.addEventListener("mousemove", updatePointer);
-    hero.addEventListener("mouseleave", () => {
-      pointerActive = false;
-      summonActive = false;
+    hero.addEventListener("mousemove", (event) => {
+      if (Date.now() - lastTouchTime < 700) return;
+      updatePointer(event);
     });
+    hero.addEventListener("mouseleave", resetPointer);
+    hero.addEventListener("touchstart", updateTouchPointer, { passive: true });
+    hero.addEventListener("touchmove", updateTouchPointer, { passive: true });
+    hero.addEventListener("touchend", endTouchPointer, { passive: true });
+    hero.addEventListener("touchcancel", resetPointer, { passive: true });
     frameId = window.requestAnimationFrame(draw);
   }
 
