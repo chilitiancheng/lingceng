@@ -461,7 +461,7 @@
         vx: (Math.random() - 0.5) * 0.16,
         vy: (Math.random() - 0.5) * 0.16,
         size: 1.2 + Math.random() * 3.2,
-        alpha: 0.2 + Math.random() * 0.56,
+        alpha: 0.34 + Math.random() * 0.62,
         phase: Math.random() * Math.PI * 2
       };
       return particle;
@@ -541,7 +541,7 @@
 
         const pulse = 0.75 + Math.sin(time * 0.001 + particle.phase) * 0.25;
         context.beginPath();
-        context.fillStyle = `rgba(255, 24, 32, ${particle.alpha * pulse})`;
+        context.fillStyle = `rgba(210, 0, 18, ${particle.alpha * pulse})`;
         context.arc(particle.x, particle.y, particle.size * (0.65 + particle.z), 0, Math.PI * 2);
         context.fill();
       });
