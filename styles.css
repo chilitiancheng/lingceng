@@ -14,6 +14,10 @@
   --mood-r: 68;
   --mood-g: 178;
   --mood-b: 255;
+  --accent: rgb(var(--mood-r), var(--mood-g), var(--mood-b));
+  --accent-soft: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.18);
+  --accent-line: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.4);
+  --accent-glow: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.5);
   --radius: 8px;
   font-family: "I.MingCP", "FZSongYi-Z13", "Songti SC", "STSong", "SimSun", "NSimSun", "Noto Serif CJK SC", "Source Han Serif SC", serif;
   font-synthesis: none;
@@ -56,10 +60,10 @@ body {
 
 @keyframes faintGlow {
   0%, 100% {
-    box-shadow: 0 0 0 rgba(217, 8, 16, 0);
+    box-shadow: 0 0 0 rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0);
   }
   45% {
-    box-shadow: 0 0 22px rgba(217, 8, 16, 0.16);
+    box-shadow: 0 0 22px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.16);
   }
 }
 
@@ -165,8 +169,8 @@ h3,
 }
 
 .topbar-corner-link:hover {
-  color: #d90810;
-  text-shadow: 0 0 18px rgba(217, 8, 16, 0.42);
+  color: var(--accent);
+  text-shadow: 0 0 18px var(--accent-glow);
 }
 
 .brand {
@@ -199,21 +203,21 @@ h3,
 .eyebrow,
 .tag,
 .archive-note span {
-  color: var(--cyan);
+  color: var(--accent);
   font-size: 12px;
   letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .brand strong {
-  color: #c9070d;
+  color: var(--accent);
   font-family: Didot, "Bodoni 72", "Bodoni MT", "Times New Roman", "Songti SC", serif;
   font-size: clamp(24px, 3.2vw, 38px);
   font-style: italic;
   font-weight: 600;
   line-height: 0.86;
   text-transform: lowercase;
-  text-shadow: 0 0 16px rgba(201, 7, 13, 0.45), 0 0 2px #000;
+  text-shadow: 0 0 16px var(--accent-glow), 0 0 2px #000;
 }
 
 .brand small {
@@ -328,7 +332,7 @@ main {
 
 .hero-text {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 14px auto 0;
   color: rgba(232, 236, 233, 0.74);
   font-size: 18px;
   line-height: 2;
@@ -379,9 +383,9 @@ main {
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
-  filter: blur(0.2px);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 61%, rgba(0, 0, 0, 0.86) 66%, rgba(0, 0, 0, 0.34) 72%, transparent 76%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 0 61%, rgba(0, 0, 0, 0.86) 66%, rgba(0, 0, 0, 0.34) 72%, transparent 76%);
+  filter: blur(0.55px);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 56%, rgba(0, 0, 0, 0.78) 63%, rgba(0, 0, 0, 0.24) 71%, transparent 80%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 56%, rgba(0, 0, 0, 0.78) 63%, rgba(0, 0, 0, 0.24) 71%, transparent 80%);
   background:
     radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.12), transparent 22%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 42%, rgba(255, 255, 255, 0.06) 58%, rgba(0, 0, 0, 0.2) 100%),
@@ -433,8 +437,8 @@ main {
 
 .orb-surface::before,
 .orb-surface::after {
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 62%, rgba(0, 0, 0, 0.78) 68%, transparent 76%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 0 62%, rgba(0, 0, 0, 0.78) 68%, transparent 76%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 56%, rgba(0, 0, 0, 0.7) 65%, transparent 80%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 56%, rgba(0, 0, 0, 0.7) 65%, transparent 80%);
 }
 
 .orb-surface::after {
@@ -467,6 +471,10 @@ main {
   letter-spacing: 4.5px;
   text-transform: uppercase;
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.34);
+}
+
+.hero-copy > .eyebrow {
+  margin-top: 12px;
 }
 
 @keyframes orbitSpin {
@@ -514,7 +522,7 @@ main {
   height: 60px;
   margin: 0 auto;
   overflow: hidden;
-  border: 1px solid rgba(217, 8, 16, 0.32);
+  border: 1px solid rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.32);
   border-radius: 12px;
   background: rgba(12, 14, 16, 0.94);
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
@@ -523,7 +531,7 @@ main {
 
 .card-nav.open {
   height: 450px;
-  border-color: rgba(217, 8, 16, 0.55);
+  border-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.55);
 }
 
 .card-nav-top {
@@ -542,7 +550,7 @@ main {
   gap: 7px;
   border: 0;
   background: transparent;
-  color: #ff6b70;
+  color: var(--accent);
   cursor: pointer;
 }
 
@@ -564,11 +572,11 @@ main {
 
 .card-nav-title {
   justify-self: center;
-  color: #f2d7d8;
+  color: var(--accent);
   font-family: Didot, "Bodoni 72", "Bodoni MT", "Times New Roman", "Songti SC", serif;
   font-size: clamp(20px, 2.35vw, 30px);
   font-style: italic;
-  text-shadow: 0 0 18px rgba(217, 8, 16, 0.28);
+  text-shadow: 0 0 18px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.34);
 }
 
 .nav-card .tag {
@@ -626,7 +634,7 @@ main {
 }
 
 .nav-card:hover {
-  border-color: rgba(217, 8, 16, 0.46);
+  border-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.5);
 }
 
 .tag {
@@ -634,7 +642,7 @@ main {
   align-items: center;
   min-height: 24px;
   padding: 0 8px;
-  border: 1px solid rgba(217, 8, 16, 0.35);
+  border: 1px solid rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.38);
 }
 
 .tag.danger {
@@ -689,8 +697,8 @@ main {
 
 .filter-tabs button.active {
   color: #071011;
-  background: var(--cyan);
-  border-color: var(--cyan);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .cards-grid {
@@ -718,7 +726,7 @@ main {
   overflow: hidden;
   --mouse-x: 50%;
   --mouse-y: 50%;
-  --spotlight-color: rgba(217, 8, 16, 0.18);
+  --spotlight-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.22);
 }
 
 .spotlight-card::before {
@@ -751,9 +759,9 @@ main {
 }
 
 .card:hover {
-  border-color: rgba(217, 8, 16, 0.55);
+  border-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.58);
   transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26), inset 0 0 0 1px rgba(217, 8, 16, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26), inset 0 0 0 1px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.12);
 }
 
 .card:active,
@@ -816,7 +824,7 @@ main {
 }
 
 .map-section {
-  background: linear-gradient(180deg, rgba(217, 8, 16, 0.04), rgba(8, 10, 12, 0));
+  background: linear-gradient(180deg, rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.05), rgba(8, 10, 12, 0));
 }
 
 .canvas-map-wrap {
@@ -862,7 +870,7 @@ main {
 }
 
 .relation-overview span {
-  color: var(--cyan);
+  color: var(--accent);
   font-size: 12px;
   font-family: "Courier New", Consolas, "SimSun", monospace;
 }
@@ -901,8 +909,8 @@ main {
 }
 
 .relation-chip:hover {
-  border-color: rgba(217, 8, 16, 0.62);
-  color: var(--cyan);
+  border-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.64);
+  color: var(--accent);
 }
 
 .relation-chips.muted span {
@@ -931,7 +939,7 @@ main {
 }
 
 .relation-list li strong {
-  color: var(--cyan);
+  color: var(--accent);
   font-weight: 400;
   white-space: nowrap;
 }
@@ -975,7 +983,7 @@ main {
 }
 
 .glyph-rings span:nth-child(1) { --i: 0; }
-.glyph-rings span:nth-child(2) { --i: 34px; border-color: rgba(217, 8, 16, 0.45); }
+.glyph-rings span:nth-child(2) { --i: 34px; border-color: rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.45); }
 .glyph-rings span:nth-child(3) { --i: 72px; border-color: rgba(158, 63, 66, 0.75); }
 
 .story-list {
@@ -1061,7 +1069,7 @@ main {
   border: 0;
   padding: 0;
   background: transparent;
-  color: var(--cyan);
+  color: var(--accent);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -1079,8 +1087,8 @@ main {
 }
 
 .decrypting-text:not(.decrypted-text-done) {
-  color: #ff6b70;
-  text-shadow: 0 0 14px rgba(217, 8, 16, 0.34);
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.36);
 }
 
 .decrypted-text-done {
@@ -1125,8 +1133,8 @@ main {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #ff3138;
-  box-shadow: 0 0 16px rgba(217, 8, 16, 0.75);
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.78);
   transform: translate(-50%, -50%);
 }
 
@@ -1136,13 +1144,13 @@ main {
   top: 0;
   width: 14px;
   height: 14px;
-  border: 2px solid #ff3138;
-  filter: drop-shadow(0 0 8px rgba(217, 8, 16, 0.55));
+  border: 2px solid var(--accent);
+  filter: drop-shadow(0 0 8px rgba(var(--mood-r), var(--mood-g), var(--mood-b), 0.58));
   transition: transform 160ms ease, border-color 160ms ease;
 }
 
 .target-cursor.locked .target-cursor-corner {
-  border-color: #ff6b70;
+  border-color: var(--accent);
 }
 
 .corner-tl {

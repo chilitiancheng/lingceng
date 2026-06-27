@@ -458,13 +458,17 @@
     let animationFrame = 0;
     let pressFrame = 0;
     let lastPressTime = 0;
+    let tieMood = Math.random() < 0.5 ? "blue" : "red";
 
     const applyOrbPhase = () => {
       const boundary = 106 - displayHeat * 116;
       const surfaceShift = 100 - displayHeat * 100;
-      const moodRed = Math.round(68 + (217 - 68) * displayHeat);
-      const moodGreen = Math.round(178 + (8 - 178) * displayHeat);
-      const moodBlue = Math.round(255 + (16 - 255) * displayHeat);
+      let mood = displayHeat > 0.53 ? "red" : "blue";
+      if (displayHeat >= 0.47 && displayHeat <= 0.53) mood = tieMood;
+      if (displayHeat < 0.45 || displayHeat > 0.55) tieMood = Math.random() < 0.5 ? "blue" : "red";
+      const moodRed = mood === "red" ? 217 : 68;
+      const moodGreen = mood === "red" ? 8 : 178;
+      const moodBlue = mood === "red" ? 16 : 255;
       document.documentElement.style.setProperty("--mood-r", String(moodRed));
       document.documentElement.style.setProperty("--mood-g", String(moodGreen));
       document.documentElement.style.setProperty("--mood-b", String(moodBlue));
