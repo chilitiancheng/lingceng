@@ -362,6 +362,9 @@ main {
   --orb-axis-angle: 112deg;
   width: var(--orb-size);
   height: var(--orb-size);
+  min-width: var(--orb-size);
+  min-height: var(--orb-size);
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -380,7 +383,9 @@ main {
   left: 18%;
   width: 64%;
   height: 64%;
-  aspect-ratio: 1;
+  min-width: 64%;
+  min-height: 64%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
   filter: blur(1.25px);
@@ -1295,6 +1300,35 @@ main {
 
   .hero-orb {
     --orb-size: min(78vw, 300px);
+    width: var(--orb-size);
+    height: var(--orb-size);
+    min-width: var(--orb-size);
+    min-height: var(--orb-size);
+    max-width: var(--orb-size);
+    max-height: var(--orb-size);
+    aspect-ratio: 1 / 1;
+  }
+
+  .orb-surface {
+    top: 17%;
+    left: 17%;
+    width: 66%;
+    height: 66%;
+    min-width: 66%;
+    min-height: 66%;
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(circle at 48% 46%, rgba(255, 255, 255, 0.16), transparent 24%),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.13), transparent 40%, rgba(255, 255, 255, 0.05) 56%, rgba(0, 0, 0, 0.24) 100%),
+      linear-gradient(var(--orb-axis-angle),
+        #8fd4ff 0%,
+        #8fcfff max(0%, calc(var(--orb-boundary) - 36%)),
+        #83c8fb max(0%, calc(var(--orb-boundary) - 18%)),
+        #91cdf9 max(0%, calc(var(--orb-boundary) - 5%)),
+        #d2a2a0 var(--orb-boundary),
+        #ff5b56 min(100%, calc(var(--orb-boundary) + 7%)),
+        #ff4148 min(100%, calc(var(--orb-boundary) + 22%)),
+        #ff2f3d 100%);
   }
 
   .orb-text-ring text {
