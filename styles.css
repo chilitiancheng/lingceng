@@ -1086,9 +1086,11 @@ main {
   transition: color 180ms ease, text-shadow 180ms ease;
 }
 
-.decrypting-text:not(.decrypted-text-done) {
-  color: #ff6b70;
-  text-shadow: 0 0 14px rgba(217, 8, 16, 0.34);
+.detail-content .decrypting-text:not(.decrypted-text-done),
+.detail-content .decrypting-text:not(.decrypted-text-done) *,
+.detail-fields .decrypting-text:not(.decrypted-text-done) {
+  color: #ff6b70 !important;
+  text-shadow: 0 0 14px rgba(217, 8, 16, 0.34) !important;
 }
 
 .decrypted-text-done {
