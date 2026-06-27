@@ -455,23 +455,19 @@
     window.__lingcengOrbHeat = 0;
     let targetHeat = 0;
     let displayHeat = 0;
-    let targetRoll = 0;
-    let displayRoll = 0;
     let animationFrame = 0;
     let pressFrame = 0;
     let lastPressTime = 0;
 
     const applyOrbPhase = () => {
-      const boundary = 112 - displayHeat * 94;
-      const surfaceShift = 100 - displayHeat * 86;
+      const boundary = 106 - displayHeat * 116;
+      const surfaceShift = 100 - displayHeat * 100;
       orb.style.setProperty("--orb-heat", displayHeat.toFixed(3));
-      orb.style.setProperty("--orb-roll", `${displayRoll.toFixed(2)}deg`);
       orb.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
       orb.style.setProperty("--orb-glow-red", displayHeat.toFixed(3));
       orb.style.setProperty("--orb-glow-blue", (1 - displayHeat).toFixed(3));
       orb.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
       surface.style.setProperty("--orb-heat", displayHeat.toFixed(3));
-      surface.style.setProperty("--orb-roll", `${displayRoll.toFixed(2)}deg`);
       surface.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
       surface.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
       window.__lingcengOrbHeat = displayHeat;
@@ -479,12 +475,9 @@
 
     const animateOrb = () => {
       const heatDelta = targetHeat - displayHeat;
-      const rollDelta = targetRoll - displayRoll;
       displayHeat += heatDelta * 0.095;
-      displayRoll += rollDelta * 0.12;
-      if (Math.abs(heatDelta) < 0.001 && Math.abs(rollDelta) < 0.05) {
+      if (Math.abs(heatDelta) < 0.001) {
         displayHeat = targetHeat;
-        displayRoll = targetRoll;
         applyOrbPhase();
         animationFrame = 0;
         return;
@@ -500,7 +493,6 @@
 
     const addPhase = (amount) => {
       targetHeat = Math.max(0, Math.min(1, targetHeat + amount));
-      targetRoll += amount * 230;
       requestOrbAnimation();
     };
 
@@ -516,9 +508,9 @@
       if (!isInsideOrb(event.clientX, event.clientY)) return;
       event.preventDefault();
       const rawDelta = event.deltaY || event.deltaX || 0;
-      const delta = Math.max(-90, Math.min(90, rawDelta));
+      const delta = Math.max(-120, Math.min(120, rawDelta));
       if (!delta) return;
-      addPhase(delta / 1650);
+      addPhase(delta / 900);
     };
 
     orb.addEventListener("wheel", updateWheelPhase, { passive: false });
@@ -526,7 +518,7 @@
     const pressStep = (time) => {
       const delta = lastPressTime ? Math.min(48, time - lastPressTime) : 16;
       lastPressTime = time;
-      addPhase(delta / 3400);
+      addPhase(delta / 2200);
       pressFrame = window.requestAnimationFrame(pressStep);
     };
 
