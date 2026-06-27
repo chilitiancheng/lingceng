@@ -392,7 +392,7 @@ main {
   background:
     radial-gradient(circle at 50% 48%, rgba(255, 255, 255, calc(0.12 * (1 - var(--orb-glow-red)) + 0.035 * var(--orb-glow-red))), transparent 22%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 42%, rgba(255, 255, 255, 0.06) 58%, rgba(0, 0, 0, 0.2) 100%),
-    radial-gradient(circle at var(--orb-shadow-x) var(--orb-shadow-y), rgba(148, 8, 20, 0.98) 0 12%, rgba(215, 24, 34, 0.9) 25%, rgba(255, 55, 58, 0.62) 39%, rgba(255, 118, 102, 0.22) 52%, rgba(255, 118, 102, 0) 62%),
+    radial-gradient(circle at var(--orb-shadow-x) var(--orb-shadow-y), rgba(202, 24, 34, 0.9) 0 22%, rgba(226, 35, 42, 0.8) 40%, rgba(246, 58, 58, 0.54) 54%, rgba(255, 91, 82, 0.2) 66%, rgba(255, 91, 82, 0) 76%),
     radial-gradient(circle at 50% 50%, #b9e0fb 0 34%, #99d3ff 54%, #84c8fb 76%, rgba(132, 200, 251, 0) 90%);
   background-size: 100% 100%, 100% 100%, var(--orb-shadow-scale) var(--orb-shadow-scale), 110% 110%;
   background-position: center, center, center, center;
