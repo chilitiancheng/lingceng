@@ -370,7 +370,7 @@ main {
   border-radius: 50%;
   background: transparent;
   box-shadow:
-    0 0 52px rgba(255, 70, 58, calc(0.28 * var(--orb-glow-red))),
+    0 0 58px rgba(255, 40, 48, calc(0.34 * var(--orb-glow-red))),
     0 0 52px rgba(68, 178, 255, calc(0.3 * var(--orb-glow-blue)));
   transition: box-shadow 180ms linear;
   touch-action: manipulation;
@@ -390,20 +390,20 @@ main {
   -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 49%, rgba(0, 0, 0, 0.72) 59%, rgba(0, 0, 0, 0.2) 69%, transparent 83%);
   mask-image: radial-gradient(circle at 50% 50%, #000 0 49%, rgba(0, 0, 0, 0.72) 59%, rgba(0, 0, 0, 0.2) 69%, transparent 83%);
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.12), transparent 22%),
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, calc(0.12 + 0.12 * var(--orb-glow-red))), transparent 22%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 42%, rgba(255, 255, 255, 0.06) 58%, rgba(0, 0, 0, 0.2) 100%),
-    radial-gradient(circle at var(--orb-shadow-x) var(--orb-shadow-y), rgba(185, 12, 24, 0.76) 0 14%, rgba(214, 31, 38, 0.54) 27%, rgba(255, 76, 68, 0.24) 39%, rgba(255, 91, 86, 0) 52%),
+    radial-gradient(circle at var(--orb-shadow-x) var(--orb-shadow-y), rgba(255, 65, 73, 0.98) 0 14%, rgba(255, 45, 52, 0.82) 27%, rgba(255, 58, 60, 0.48) 40%, rgba(255, 76, 68, 0) 54%),
     radial-gradient(circle at 50% 50%, #b9e0fb 0 34%, #99d3ff 54%, #84c8fb 76%, rgba(132, 200, 251, 0) 90%);
   background-size: 100% 100%, 100% 100%, var(--orb-shadow-scale) var(--orb-shadow-scale), 110% 110%;
   background-position: center, center, center, center;
   box-shadow:
     inset 0 0 46px rgba(255, 255, 255, 0.16),
     inset 0 0 86px rgba(79, 177, 255, calc(0.35 * var(--orb-glow-blue))),
-    inset 0 0 92px rgba(255, 42, 42, calc(0.42 * var(--orb-glow-red))),
+    inset 0 0 94px rgba(255, 38, 42, calc(0.58 * var(--orb-glow-red))),
     0 0 18px rgba(118, 203, 255, calc(0.46 * var(--orb-glow-blue))),
-    0 0 18px rgba(255, 65, 56, calc(0.46 * var(--orb-glow-red))),
+    0 0 22px rgba(255, 38, 45, calc(0.56 * var(--orb-glow-red))),
     0 0 60px rgba(64, 158, 255, calc(0.18 * var(--orb-glow-blue))),
-    0 0 60px rgba(255, 35, 28, calc(0.2 * var(--orb-glow-red)));
+    0 0 70px rgba(255, 24, 32, calc(0.28 * var(--orb-glow-red)));
   transition: box-shadow 140ms linear;
 }
 
