@@ -447,6 +447,83 @@
     }
   }
 
+  function initOrbScrollPhase() {
+    const orb = $(".hero-orb");
+    const hero = $("#overview");
+    if (!orb || !hero) return;
+    let heat = 0;
+    let spin = 0;
+    let pressFrame = 0;
+    let lastPressTime = 0;
+    let lastClientX = window.innerWidth / 2;
+    let lastClientY = window.innerHeight / 2;
+    let hasPointerPosition = false;
+
+    const applyOrbPhase = () => {
+      orb.style.setProperty("--orb-heat", heat.toFixed(3));
+      orb.style.setProperty("--orb-spin", `${spin.toFixed(2)}deg`);
+    };
+
+    const addPhase = (amount) => {
+      heat = Math.max(0, Math.min(1, heat + amount));
+      spin += amount * 520;
+      applyOrbPhase();
+    };
+
+    const isInsideHero = (clientX, clientY) => {
+      const rect = hero.getBoundingClientRect();
+      return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+    };
+
+    const updateWheelPhase = (event) => {
+      const clientX = hasPointerPosition ? lastClientX : event.clientX;
+      const clientY = hasPointerPosition ? lastClientY : event.clientY;
+      if (!isInsideHero(clientX, clientY)) return;
+      const delta = Math.min(140, Math.abs(event.deltaY || event.deltaX || 0));
+      if (!delta) return;
+      addPhase(delta / 1200);
+    };
+
+    window.addEventListener("wheel", updateWheelPhase, { passive: true });
+    hero.addEventListener("wheel", updateWheelPhase, { passive: true });
+
+    hero.addEventListener("mousemove", (event) => {
+      lastClientX = event.clientX;
+      lastClientY = event.clientY;
+      hasPointerPosition = true;
+    });
+
+    const pressStep = (time) => {
+      const delta = lastPressTime ? Math.min(48, time - lastPressTime) : 16;
+      lastPressTime = time;
+      addPhase(delta / 1800);
+      pressFrame = window.requestAnimationFrame(pressStep);
+    };
+
+    const startPress = (event) => {
+      if (event.touches && event.touches.length > 1) return;
+      if (pressFrame) return;
+      lastPressTime = 0;
+      pressFrame = window.requestAnimationFrame(pressStep);
+    };
+
+    const stopPress = () => {
+      if (!pressFrame) return;
+      window.cancelAnimationFrame(pressFrame);
+      pressFrame = 0;
+      lastPressTime = 0;
+    };
+
+    orb.addEventListener("touchstart", startPress, { passive: true });
+    orb.addEventListener("touchend", stopPress, { passive: true });
+    orb.addEventListener("touchcancel", stopPress, { passive: true });
+    orb.addEventListener("mousedown", (event) => {
+      if (event.button === 0 && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) startPress(event);
+    });
+    window.addEventListener("mouseup", stopPress);
+    applyOrbPhase();
+  }
+
   function initHeroParticles() {
     const canvas = $("#heroParticles");
     const hero = $("#overview");
@@ -778,6 +855,7 @@
   initIntroCardNav();
   initHeroParticles();
   initOrbMagnet();
+  initOrbScrollPhase();
   initTargetCursor();
   updateTopbarState();
 })();

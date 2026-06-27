@@ -341,15 +341,21 @@ main {
 
 .hero-orb {
   position: relative;
+  --orb-heat: 0;
+  --orb-spin: 0deg;
   width: clamp(260px, 38vw, 450px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 50%, rgba(222, 12, 18, 0.9) 0 16%, rgba(199, 6, 12, 0.72) 30%, rgba(135, 0, 0, 0.36) 50%, rgba(68, 0, 0, 0.12) 68%, transparent 82%);
-  box-shadow: 0 0 46px rgba(201, 7, 13, 0.18);
-  animation: archiveReveal 900ms ease 80ms both, faintGlow 5.2s ease-in-out 1.2s infinite;
+    radial-gradient(circle at 50% 50%, rgba(222, 12, 18, calc(0.9 * var(--orb-heat))) 0 16%, rgba(199, 6, 12, calc(0.72 * var(--orb-heat))) 30%, rgba(135, 0, 0, calc(0.36 * var(--orb-heat))) 50%, rgba(68, 0, 0, calc(0.12 * var(--orb-heat))) 68%, transparent 82%),
+    radial-gradient(circle at 50% 50%, rgba(34, 122, 255, calc(0.72 * (1 - var(--orb-heat)))) 0 16%, rgba(17, 76, 178, calc(0.54 * (1 - var(--orb-heat)))) 31%, rgba(8, 35, 92, calc(0.34 * (1 - var(--orb-heat)))) 52%, rgba(2, 14, 38, calc(0.16 * (1 - var(--orb-heat)))) 70%, transparent 84%);
+  box-shadow:
+    0 0 46px rgba(201, 7, 13, calc(0.18 * var(--orb-heat))),
+    0 0 42px rgba(34, 122, 255, calc(0.2 * (1 - var(--orb-heat))));
+  transform: rotate(var(--orb-spin));
+  transition: background 180ms linear, box-shadow 180ms linear;
 }
 
 .hero-orb::before {
@@ -358,7 +364,8 @@ main {
   inset: 19%;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 48% 48%, rgba(255, 62, 68, 0.42), rgba(166, 0, 0, 0.26) 42%, transparent 74%);
+    radial-gradient(circle at 48% 48%, rgba(255, 62, 68, calc(0.42 * var(--orb-heat))), rgba(166, 0, 0, calc(0.26 * var(--orb-heat))) 42%, transparent 74%),
+    radial-gradient(circle at 48% 48%, rgba(102, 178, 255, calc(0.34 * (1 - var(--orb-heat)))), rgba(18, 78, 168, calc(0.22 * (1 - var(--orb-heat)))) 42%, transparent 74%);
   filter: blur(18px);
 }
 
