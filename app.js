@@ -463,8 +463,9 @@
     const applyOrbPhase = () => {
       const boundary = 106 - displayHeat * 116;
       const surfaceShift = 100 - displayHeat * 100;
-      const shadowX = 152 - displayHeat * 132;
-      const shadowY = 24 + displayHeat * 52;
+      const shadowX = 152 - displayHeat * 102;
+      const shadowY = 24 + displayHeat * 26;
+      const shadowScale = 108 + Math.pow(displayHeat, 1.35) * 92;
       let mood = displayHeat > 0.62 ? "red" : "blue";
       if (displayHeat >= 0.58 && displayHeat <= 0.62) mood = tieMood;
       if (displayHeat < 0.55 || displayHeat > 0.65) tieMood = Math.random() < 0.5 ? "blue" : "red";
@@ -484,11 +485,13 @@
       orb.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
       orb.style.setProperty("--orb-shadow-x", `${shadowX.toFixed(2)}%`);
       orb.style.setProperty("--orb-shadow-y", `${shadowY.toFixed(2)}%`);
+      orb.style.setProperty("--orb-shadow-scale", `${shadowScale.toFixed(2)}%`);
       surface.style.setProperty("--orb-heat", displayHeat.toFixed(3));
       surface.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
       surface.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
       surface.style.setProperty("--orb-shadow-x", `${shadowX.toFixed(2)}%`);
       surface.style.setProperty("--orb-shadow-y", `${shadowY.toFixed(2)}%`);
+      surface.style.setProperty("--orb-shadow-scale", `${shadowScale.toFixed(2)}%`);
       window.__lingcengOrbHeat = displayHeat;
     };
 

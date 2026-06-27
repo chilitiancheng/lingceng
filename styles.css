@@ -361,6 +361,7 @@ main {
   --orb-surface-shift: 0%;
   --orb-shadow-x: 152%;
   --orb-shadow-y: 24%;
+  --orb-shadow-scale: 108%;
   --orb-axis-angle: 112deg;
   width: var(--orb-size);
   height: var(--orb-size);
@@ -393,7 +394,7 @@ main {
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 42%, rgba(255, 255, 255, 0.06) 58%, rgba(0, 0, 0, 0.2) 100%),
     radial-gradient(circle at var(--orb-shadow-x) var(--orb-shadow-y), rgba(185, 12, 24, 0.76) 0 14%, rgba(214, 31, 38, 0.54) 27%, rgba(255, 76, 68, 0.24) 39%, rgba(255, 91, 86, 0) 52%),
     radial-gradient(circle at 50% 50%, #b9e0fb 0 34%, #99d3ff 54%, #84c8fb 76%, rgba(132, 200, 251, 0) 90%);
-  background-size: 100% 100%, 100% 100%, 108% 108%, 110% 110%;
+  background-size: 100% 100%, 100% 100%, var(--orb-shadow-scale) var(--orb-shadow-scale), 110% 110%;
   background-position: center, center, center, center;
   box-shadow:
     inset 0 0 46px rgba(255, 255, 255, 0.16),
