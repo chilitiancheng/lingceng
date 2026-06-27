@@ -449,59 +449,63 @@
 
   function initOrbScrollPhase() {
     const orb = $(".hero-orb");
+    const surface = $(".orb-surface");
     const hero = $("#overview");
-    if (!orb || !hero) return;
+    if (!orb || !surface || !hero) return;
+    window.__lingcengOrbHeat = 0;
     let heat = 0;
-    let spin = 0;
+    let roll = 0;
     let pressFrame = 0;
     let lastPressTime = 0;
-    let lastClientX = window.innerWidth / 2;
-    let lastClientY = window.innerHeight / 2;
-    let hasPointerPosition = false;
 
     const applyOrbPhase = () => {
+      const boundary = 112 - heat * 94;
       orb.style.setProperty("--orb-heat", heat.toFixed(3));
-      orb.style.setProperty("--orb-spin", `${spin.toFixed(2)}deg`);
+      orb.style.setProperty("--orb-roll", `${roll.toFixed(2)}deg`);
+      orb.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
+      orb.style.setProperty("--orb-glow-red", heat.toFixed(3));
+      orb.style.setProperty("--orb-glow-blue", (1 - heat).toFixed(3));
+      surface.style.setProperty("--orb-heat", heat.toFixed(3));
+      surface.style.setProperty("--orb-roll", `${roll.toFixed(2)}deg`);
+      surface.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
+      window.__lingcengOrbHeat = heat;
     };
 
     const addPhase = (amount) => {
       heat = Math.max(0, Math.min(1, heat + amount));
-      spin += amount * 520;
+      roll += amount * 190;
       applyOrbPhase();
     };
 
-    const isInsideHero = (clientX, clientY) => {
-      const rect = hero.getBoundingClientRect();
-      return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+    const isInsideOrb = (clientX, clientY) => {
+      const rect = orb.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const radius = rect.width / 2;
+      return Math.hypot(clientX - centerX, clientY - centerY) <= radius * 0.72;
     };
 
     const updateWheelPhase = (event) => {
-      const clientX = hasPointerPosition ? lastClientX : event.clientX;
-      const clientY = hasPointerPosition ? lastClientY : event.clientY;
-      if (!isInsideHero(clientX, clientY)) return;
-      const delta = Math.min(140, Math.abs(event.deltaY || event.deltaX || 0));
+      if (!isInsideOrb(event.clientX, event.clientY)) return;
+      event.preventDefault();
+      const rawDelta = event.deltaY || event.deltaX || 0;
+      const delta = Math.max(-150, Math.min(150, rawDelta));
       if (!delta) return;
-      addPhase(delta / 1200);
+      addPhase(delta / 1350);
     };
 
-    window.addEventListener("wheel", updateWheelPhase, { passive: true });
-    hero.addEventListener("wheel", updateWheelPhase, { passive: true });
-
-    hero.addEventListener("mousemove", (event) => {
-      lastClientX = event.clientX;
-      lastClientY = event.clientY;
-      hasPointerPosition = true;
-    });
+    orb.addEventListener("wheel", updateWheelPhase, { passive: false });
 
     const pressStep = (time) => {
       const delta = lastPressTime ? Math.min(48, time - lastPressTime) : 16;
       lastPressTime = time;
-      addPhase(delta / 1800);
+      addPhase(delta / 2500);
       pressFrame = window.requestAnimationFrame(pressStep);
     };
 
     const startPress = (event) => {
       if (event.touches && event.touches.length > 1) return;
+      if (event.cancelable) event.preventDefault();
       if (pressFrame) return;
       lastPressTime = 0;
       pressFrame = window.requestAnimationFrame(pressStep);
@@ -514,7 +518,10 @@
       lastPressTime = 0;
     };
 
-    orb.addEventListener("touchstart", startPress, { passive: true });
+    orb.addEventListener("touchstart", startPress, { passive: false });
+    orb.addEventListener("touchmove", (event) => {
+      if (pressFrame && event.cancelable) event.preventDefault();
+    }, { passive: false });
     orb.addEventListener("touchend", stopPress, { passive: true });
     orb.addEventListener("touchcancel", stopPress, { passive: true });
     orb.addEventListener("mousedown", (event) => {
@@ -637,6 +644,10 @@
 
     const draw = (time) => {
       context.clearRect(0, 0, width, height);
+      const orbHeat = Math.max(0, Math.min(1, Number(window.__lingcengOrbHeat) || 0));
+      const particleRed = Math.round(34 + (210 - 34) * orbHeat);
+      const particleGreen = Math.round(116 * (1 - orbHeat));
+      const particleBlue = Math.round(255 * (1 - orbHeat) + 18 * orbHeat);
       if (summonActive && time - lastSummonSpawn > 95) {
         lastSummonSpawn = time;
         for (let i = 0; i < 10; i += 1) {
@@ -677,7 +688,7 @@
 
         const pulse = 0.75 + Math.sin(time * 0.001 + particle.phase) * 0.25;
         context.beginPath();
-        context.fillStyle = `rgba(210, 0, 18, ${particle.alpha * pulse})`;
+        context.fillStyle = `rgba(${particleRed}, ${particleGreen}, ${particleBlue}, ${particle.alpha * pulse})`;
         context.arc(particle.x, particle.y, particle.size * (0.65 + particle.z), 0, Math.PI * 2);
         context.fill();
       });
