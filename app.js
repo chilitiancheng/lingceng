@@ -465,12 +465,9 @@
     const applyOrbPhase = () => {
       const boundary = 106 - displayHeat * 116;
       const surfaceShift = 100 - displayHeat * 100;
-      const shadowX = 185 - displayHeat * 135;
-      const shadowY = 20 + displayHeat * 30;
-      const shadowScale = displayHeat <= 0.01 ? 80 : 108 + Math.pow(displayHeat, 1.35) * 92;
-      let mood = displayHeat > 0.62 ? "red" : "blue";
-      if (displayHeat >= 0.58 && displayHeat <= 0.62) mood = tieMood;
-      if (displayHeat < 0.55 || displayHeat > 0.65) tieMood = Math.random() < 0.5 ? "blue" : "red";
+      let mood = displayHeat > 0.53 ? "red" : "blue";
+      if (displayHeat >= 0.47 && displayHeat <= 0.53) mood = tieMood;
+      if (displayHeat < 0.45 || displayHeat > 0.55) tieMood = Math.random() < 0.5 ? "blue" : "red";
       const moodRed = mood === "red" ? 217 : 68;
       const moodGreen = mood === "red" ? 8 : 178;
       const moodBlue = mood === "red" ? 16 : 255;
@@ -485,15 +482,9 @@
       orb.style.setProperty("--orb-glow-red", displayHeat.toFixed(3));
       orb.style.setProperty("--orb-glow-blue", (1 - displayHeat).toFixed(3));
       orb.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
-      orb.style.setProperty("--orb-shadow-x", `${shadowX.toFixed(2)}%`);
-      orb.style.setProperty("--orb-shadow-y", `${shadowY.toFixed(2)}%`);
-      orb.style.setProperty("--orb-shadow-scale", `${shadowScale.toFixed(2)}%`);
       surface.style.setProperty("--orb-heat", displayHeat.toFixed(3));
       surface.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
       surface.style.setProperty("--orb-surface-shift", `${surfaceShift.toFixed(2)}%`);
-      surface.style.setProperty("--orb-shadow-x", `${shadowX.toFixed(2)}%`);
-      surface.style.setProperty("--orb-shadow-y", `${shadowY.toFixed(2)}%`);
-      surface.style.setProperty("--orb-shadow-scale", `${shadowScale.toFixed(2)}%`);
       window.__lingcengOrbHeat = displayHeat;
     };
 
@@ -525,11 +516,11 @@
       if (targetHeat >= 1) {
         targetHeat = 1;
         pressDirection = -1;
-        pressPauseUntil = time + 720;
+        pressPauseUntil = time + 620;
       } else if (targetHeat <= 0) {
         targetHeat = 0;
         pressDirection = 1;
-        pressPauseUntil = time + 720;
+        pressPauseUntil = time + 620;
       }
       requestOrbAnimation();
     };
