@@ -458,14 +458,16 @@
     let animationFrame = 0;
     let pressFrame = 0;
     let lastPressTime = 0;
+    let pressDirection = 1;
+    let pressPauseUntil = 0;
     let tieMood = Math.random() < 0.5 ? "blue" : "red";
 
     const applyOrbPhase = () => {
       const boundary = 106 - displayHeat * 116;
       const surfaceShift = 100 - displayHeat * 100;
-      const shadowX = 152 - displayHeat * 102;
-      const shadowY = 24 + displayHeat * 26;
-      const shadowScale = 108 + Math.pow(displayHeat, 1.35) * 92;
+      const shadowX = 185 - displayHeat * 135;
+      const shadowY = 20 + displayHeat * 30;
+      const shadowScale = displayHeat <= 0.01 ? 80 : 108 + Math.pow(displayHeat, 1.35) * 92;
       let mood = displayHeat > 0.62 ? "red" : "blue";
       if (displayHeat >= 0.58 && displayHeat <= 0.62) mood = tieMood;
       if (displayHeat < 0.55 || displayHeat > 0.65) tieMood = Math.random() < 0.5 ? "blue" : "red";
@@ -518,6 +520,20 @@
       requestOrbAnimation();
     };
 
+    const cyclePhase = (amount, time) => {
+      targetHeat += amount * pressDirection;
+      if (targetHeat >= 1) {
+        targetHeat = 1;
+        pressDirection = -1;
+        pressPauseUntil = time + 720;
+      } else if (targetHeat <= 0) {
+        targetHeat = 0;
+        pressDirection = 1;
+        pressPauseUntil = time + 720;
+      }
+      requestOrbAnimation();
+    };
+
     const isInsideOrb = (clientX, clientY) => {
       const rect = orb.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -540,7 +556,7 @@
     const pressStep = (time) => {
       const delta = lastPressTime ? Math.min(48, time - lastPressTime) : 16;
       lastPressTime = time;
-      addPhase(delta / 2200);
+      if (time >= pressPauseUntil) cyclePhase(delta / 2200, time);
       pressFrame = window.requestAnimationFrame(pressStep);
     };
 
@@ -548,6 +564,9 @@
       if (event.touches && event.touches.length > 1) return;
       if (event.cancelable) event.preventDefault();
       if (pressFrame) return;
+      if (targetHeat >= 0.995) pressDirection = -1;
+      if (targetHeat <= 0.005) pressDirection = 1;
+      pressPauseUntil = 0;
       lastPressTime = 0;
       pressFrame = window.requestAnimationFrame(pressStep);
     };
