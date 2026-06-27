@@ -462,6 +462,15 @@
     const applyOrbPhase = () => {
       const boundary = 106 - displayHeat * 116;
       const surfaceShift = 100 - displayHeat * 100;
+      const moodRed = Math.round(68 + (217 - 68) * displayHeat);
+      const moodGreen = Math.round(178 + (8 - 178) * displayHeat);
+      const moodBlue = Math.round(255 + (16 - 255) * displayHeat);
+      document.documentElement.style.setProperty("--mood-r", String(moodRed));
+      document.documentElement.style.setProperty("--mood-g", String(moodGreen));
+      document.documentElement.style.setProperty("--mood-b", String(moodBlue));
+      hero.style.setProperty("--mood-r", String(moodRed));
+      hero.style.setProperty("--mood-g", String(moodGreen));
+      hero.style.setProperty("--mood-b", String(moodBlue));
       orb.style.setProperty("--orb-heat", displayHeat.toFixed(3));
       orb.style.setProperty("--orb-boundary", `${boundary.toFixed(2)}%`);
       orb.style.setProperty("--orb-glow-red", displayHeat.toFixed(3));
