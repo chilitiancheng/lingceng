@@ -1294,7 +1294,7 @@ main {
   }
 
   .hero-orb {
-    width: min(78vw, 300px);
+    --orb-size: min(78vw, 300px);
   }
 
   .orb-text-ring text {
